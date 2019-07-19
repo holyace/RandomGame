@@ -1,13 +1,9 @@
 package com.chad.demo.random.mgr;
 
-import android.graphics.PointF;
-
 import com.chad.demo.random.model.MoveModel;
 import com.chad.demo.random.model.PolicyConfig;
 import com.chad.demo.random.model.PositionModel;
-import com.chad.demo.random.util.Direction;
 import com.chad.demo.random.util.ProbabilityUtil;
-import com.chad.demo.random.util.Turn;
 
 import java.util.Random;
 
@@ -18,7 +14,7 @@ import java.util.Random;
  */
 public class MovePolicy {
 
-    private static float[] RATE_TURN = new float[] { 1 / 3f, 1 / 3f, 1 / 3f};
+    private static final String TAG = MovePolicy.class.getSimpleName();
 
     private PolicyConfig mConfig;
     private Random mRandom;
@@ -32,66 +28,140 @@ public class MovePolicy {
         mRandom = new Random();
     }
 
-    public MoveModel move(int width, int height, MoveModel curr) {
-        PositionModel pos = curr.getNow();
-
-        switch (pos.getDirection()) {
-            case GO_RIGHT:
-                handleGoRight(width, height, pos, 0);
-                break;
-
-            case GO_LEFT:
-                handleGoLeft(width, height, pos, 0);
-                break;
-
-            case GO_BOTTOM:
-                handleGoBottom(width, height, pos, 0);
-                break;
-
-            case GO_UP:
-                handleGoUp(width, height, pos, 0);
-                break;
-        }
-        return curr;
+    private boolean isLeftTopCorner(int w, int h, PositionModel model) {
+        return model.getPosition().x <= 0 && model.getPosition().y <= 0;
     }
 
-    private void handleGoRight(int w, int h, PositionModel model, int count) {
-        if (count >= 4) {
-            return;
+    private boolean isRightTopCorner(int w, int h, PositionModel model) {
+        return model.getPosition().x >= w && model.getPosition().x <= 0;
+    }
+
+    private boolean isBottomLeftCorner(int w, int h, PositionModel model) {
+        return model.getPosition().x <= 0 && model.getPosition().y >= h;
+    }
+
+    private boolean isBottomRightCorner(int w, int h, PositionModel model) {
+        return model.getPosition().x >= w && model.getPosition().y >= h;
+    }
+
+    private boolean isTopBoundary(int w, int h, PositionModel model) {
+        return model.getPosition().y <= 0;
+    }
+
+    private boolean isBottomBoundary(int w, int h, PositionModel model) {
+        return model.getPosition().y >= h;
+    }
+
+    private boolean isLeftBoundary(int w, int h, PositionModel model) {
+        return model.getPosition().x <= 0;
+    }
+
+    private boolean isRightBoundary(int w, int h, PositionModel model) {
+        return model.getPosition().x >= w;
+    }
+
+    public MoveModel move(int w, int h, MoveModel mm) {
+        PositionModel model = mm.getNow();
+        if (isLeftTopCorner(w, h, model)) {
+            int index = ProbabilityUtil.random(mConfig.getConerRate());
+            if (index == 0) {
+                mm.goRight(null);
+            }
+            else {
+                mm.goDown(null);
+            }
         }
-        PointF pos = model.getPosition();
-        int index = ProbabilityUtil.random(pos.x >= w ? mConfig.getCollisionRate() : mConfig.getNormalRate());
-        if (index == 0) {
-            model.getDirection().turn(Turn.TURN_LEFT);
-            handleGoUp(w, h, model, count++);
+        else if (isRightTopCorner(w, h, model)) {
+            int index = ProbabilityUtil.random(mConfig.getConerRate());
+            if (index == 0) {
+                mm.goLeft(null);
+            }
+            else {
+                mm.goDown(null);
+            }
         }
-        else if (index == 1) {
-            model.getDirection().turn(Turn.TURN_RIGHT);
-            handleGoBottom(w, h, model, count++);
+        else if (isBottomLeftCorner(w, h, model)) {
+            int index = ProbabilityUtil.random(mConfig.getConerRate());
+            if (index == 0) {
+                mm.goUp(null);
+            }
+            else {
+                mm.goRight(null);
+            }
         }
-        else if (index == 2) {
-            model.getDirection().turn(Turn.TURN_BACK);
-            handleGoLeft(w, h, model, count++);
+        else if (isBottomRightCorner(w, h, model)) {
+            int index = ProbabilityUtil.random(mConfig.getConerRate());
+            if (index == 0) {
+                mm.goUp(null);
+            }
+            else {
+                mm.goLeft(null);
+            }
+        }
+        else if (isLeftBoundary(w, h, model)) {
+            int index = ProbabilityUtil.random(mConfig.getBoundaryRate());
+            if (index == 0) {
+                mm.goDown(null);
+            }
+            else if (index == 1) {
+                mm.goUp(null);
+            }
+            else {
+                mm.goRight(null);
+            }
+        }
+        else if (isTopBoundary(w, h, model)) {
+            int index = ProbabilityUtil.random(mConfig.getBoundaryRate());
+            if (index == 0) {
+                mm.goLeft(null);
+            }
+            else if (index == 1) {
+                mm.goRight(null);
+            }
+            else {
+                mm.goDown(null);
+            }
+        }
+        else if (isRightBoundary(w, h, model)) {
+            int index = ProbabilityUtil.random(mConfig.getBoundaryRate());
+            if (index == 0) {
+                mm.goUp(null);
+            }
+            else if (index == 1) {
+                mm.goDown(null);
+            }
+            else {
+                mm.goLeft(null);
+            }
+        }
+        else if (isBottomBoundary(w, h, model)) {
+            int index = ProbabilityUtil.random(mConfig.getBoundaryRate());
+            if (index == 0) {
+                mm.goLeft(null);
+            }
+            else if (index == 1) {
+                mm.goRight(null);
+            }
+            else {
+                mm.goUp(null);
+            }
         }
         else {
-            pos.x += mConfig.getSpeed();
+            int index = ProbabilityUtil.random(mConfig.getNormalRate());
+            if (index == 0) {
+                mm.turnLeft();
+            }
+            else if (index == 1) {
+                mm.turnRight();
+            }
+            else if (index == 2) {
+                mm.turnBack();
+            }
+            else {
+                mm.goAhead();
+            }
         }
+        return mm;
     }
 
-    private void handleGoBottom(int w, int h, PositionModel model, int count) {
-        if (count >= 4) {
-            return;
-        }
-        PointF pos = model.getPosition();
-        int index = ProbabilityUtil.random(pos.y >= h ? mConfig.getCollisionRate() : mConfig.getNormalRate());
-
-    }
-
-    private void handleGoLeft(int w, int h, PositionModel model, int count) {
-
-    }
-
-    private void handleGoUp(int w, int h, PositionModel model, int count) {
-
-    }
 }

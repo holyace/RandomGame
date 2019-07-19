@@ -7,33 +7,18 @@ package com.chad.demo.random.util;
  */
 public enum Direction {
 
-    GO_UP,
-    GO_RIGHT,
-    GO_BOTTOM,
-    GO_LEFT;
+    GO_UP("GO_UP"),
+    GO_RIGHT("GO_RIGHT"),
+    GO_DOWN("GO_DOWN"),
+    GO_LEFT("GO_LEFT");
 
-    public Direction valueOf(int val) {
-        int len = Direction.values().length;
-        int index = val % len;
-        if (index < 0) {
-            index = (index + len) % len;
-        }
-        return Direction.values()[index];
+    private String msg;
+
+    Direction(String msg) {
+        this.msg = msg;
     }
 
-    public Direction turn(Turn turn) {
-        switch (turn) {
-            case TURN_BACK:
-                return valueOf(this.ordinal() + 2);
-
-            case TURN_LEFT:
-                return valueOf(this.ordinal() - 1);
-
-            case TURN_RIGHT:
-                return valueOf(this.ordinal() + 1);
-            case KEEP:
-                default:
-                    return this;
-        }
+    public String getMsg() {
+        return msg;
     }
 }

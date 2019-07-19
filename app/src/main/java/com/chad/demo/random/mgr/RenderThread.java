@@ -32,7 +32,7 @@ public class RenderThread implements Runnable {
     private Robot mRobot;
     private IRender mRender;
 
-    private int mFPS = 30;
+    private int mFPS = 24;
 
     private long mTimeInteval = 1000 / mFPS;
 

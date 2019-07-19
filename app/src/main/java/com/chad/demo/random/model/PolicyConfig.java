@@ -9,40 +9,23 @@ public class PolicyConfig {
 
     private float[] normalRate;
 
-    private float[] collisionRate;
+    private float[] boundaryRate;
 
-    private int speed = 3;
+    private float[] conerRate;
+
+    private int speed = 20;
 
     public PolicyConfig() {
         normalRate = new float[] {0.075f, 0.075f, 0.05f, 0.8f};
-        collisionRate = new float[] {1 / 3f, 1 / 3f, 1 / 3f};
+        boundaryRate = new float[] {1 / 3f, 1 / 3f, 1 / 3f};
+        conerRate = new float[] { 0.5f, 0.5f};
     }
 
-    public PolicyConfig(float[] normalRate, float[] collisionRate) {
+    public PolicyConfig(float[] normalRate, float[] boundaryRate, float[] conerRate, int speed) {
         this.normalRate = normalRate;
-        this.collisionRate = collisionRate;
-    }
-
-    public float[] getNormalRate() {
-        return normalRate;
-    }
-
-    public void setNormalRate(float[] normalRate) {
-        if (normalRate == null || normalRate.length == 0) {
-            return;
-        }
-        this.normalRate = normalRate;
-    }
-
-    public float[] getCollisionRate() {
-        return collisionRate;
-    }
-
-    public void setCollisionRate(float[] collisionRate) {
-        if (collisionRate == null || collisionRate.length == 0) {
-            return;
-        }
-        this.collisionRate = collisionRate;
+        this.boundaryRate = boundaryRate;
+        this.conerRate = conerRate;
+        this.speed = speed;
     }
 
     public int getSpeed() {
@@ -54,5 +37,29 @@ public class PolicyConfig {
             return;
         }
         this.speed = speed;
+    }
+
+    public float[] getNormalRate() {
+        return normalRate;
+    }
+
+    public void setNormalRate(float[] normalRate) {
+        this.normalRate = normalRate;
+    }
+
+    public float[] getBoundaryRate() {
+        return boundaryRate;
+    }
+
+    public void setBoundaryRate(float[] boundaryRate) {
+        this.boundaryRate = boundaryRate;
+    }
+
+    public float[] getConerRate() {
+        return conerRate;
+    }
+
+    public void setConerRate(float[] conerRate) {
+        this.conerRate = conerRate;
     }
 }

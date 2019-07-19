@@ -42,4 +42,11 @@ public class PositionModel {
         }
         position.set(x, y);
     }
+
+    public void setPosition(PointF point) {
+        if (point == null) {
+            return;
+        }
+        setPosition(point.x, point.y);
+    }
 }
