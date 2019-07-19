@@ -1,9 +1,8 @@
 package com.chad.demo.random;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.SurfaceView;
-import android.view.Window;
 import android.view.WindowManager;
 
 import com.chad.demo.random.mgr.Presenter;

@@ -6,8 +6,19 @@ package com.chad.demo.random.util;
  * Created by chad on 2019-07-10.
  */
 public enum  Turn {
-    KEEP,
-    TURN_LEFT,
-    TURN_RIGHT,
-    TURN_BACK;
+
+    KEEP("KEEP"),
+    TURN_LEFT("TURN_LEFT"),
+    TURN_RIGHT("TURN_RIGHT"),
+    TURN_BACK("TURN_BACK");
+
+    private String msg;
+
+    Turn(String msg) {
+        this.msg = msg;
+    }
+
+    public String getMsg() {
+        return msg;
+    }
 }

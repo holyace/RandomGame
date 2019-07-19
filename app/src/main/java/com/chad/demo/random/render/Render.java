@@ -3,7 +3,6 @@ package com.chad.demo.random.render;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.Path;
 import android.graphics.PointF;
 
 import com.chad.demo.random.mgr.MovePolicy;
@@ -11,8 +10,6 @@ import com.chad.demo.random.model.IDrawModel;
 import com.chad.demo.random.model.MoveModel;
 import com.chad.demo.random.model.Robot;
 import com.chad.demo.random.util.Direction;
-
-import java.util.Random;
 
 /**
  * No comment for you. yeah, come on, bite me~
@@ -26,27 +23,12 @@ public class Render implements IRender {
     private Paint mPaint;
     private Paint mBgPaint;
 
-    private float mBaseLine;
-
-    private PointF mLastPoint;
-    private PointF mCurrentPoint;
-
-    private Direction mLastDirection;
-
-    private float mLastX, mLastY, mX, mY, mR;
+    private float mR;
 
     private float mSpeed = 10;
 
-    private Path mPath;
-
-    private Random mRandom;
-
-    private Direction mDirection = Direction.GO_RIGHT;
-
     private int mWidth;
     private int mHeigth;
-
-    private int mCount;
 
     private IDrawModel mDrawModel;
 
@@ -54,9 +36,10 @@ public class Render implements IRender {
 
     private MoveModel mMoveModel;
 
-    private long mLastTime;
-
     public Render(Robot robo) {
+
+        mDrawModel = robo;
+
         mPaint = new Paint();
         mPaint.setAntiAlias(true);
         mPaint.setColor(Color.parseColor("#ff0000"));
@@ -70,10 +53,6 @@ public class Render implements IRender {
         mBgPaint.setStrokeWidth(1);
 
         mR = 5;
-
-        mPath = new Path();
-
-        mRandom = new Random();
 
         mPolicy = new MovePolicy();
 
@@ -92,11 +71,6 @@ public class Render implements IRender {
     public void setCanvasSize(int width, int height) {
         mWidth = width;
         mHeigth = height;
-
-        mLastX = mX = mWidth / 2f;
-        mLastY = mY = mHeigth / 2f;
-
-        mPath.moveTo(mX, mY);
 
         mMoveModel.setRange(width, height);
 

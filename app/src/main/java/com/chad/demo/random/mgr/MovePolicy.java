@@ -17,7 +17,6 @@ public class MovePolicy {
     private static final String TAG = MovePolicy.class.getSimpleName();
 
     private PolicyConfig mConfig;
-    private Random mRandom;
 
     public MovePolicy() {
         this(new PolicyConfig());
@@ -25,7 +24,6 @@ public class MovePolicy {
 
     public MovePolicy(PolicyConfig config) {
         mConfig = config;
-        mRandom = new Random();
     }
 
     private boolean isLeftTopCorner(int w, int h, PositionModel model) {
