@@ -9,7 +9,7 @@ import android.graphics.RectF;
  * <p>
  * Created by chad on 2019-06-28.
  */
-public class Robot implements IRobot, IDrawModel {
+public class Robot implements IRobot {
 
     @Override
     public PointF getCurrentPosition() {
@@ -39,5 +39,10 @@ public class Robot implements IRobot, IDrawModel {
     @Override
     public void setTexture(Bitmap bitmap) {
 
+    }
+
+    @Override
+    public int getSpeed() {
+        return 0;
     }
 }

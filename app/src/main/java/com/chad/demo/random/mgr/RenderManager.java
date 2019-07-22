@@ -1,9 +1,14 @@
 package com.chad.demo.random.mgr;
 
+import android.content.Context;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
+import com.chad.demo.random.render.IRender;
 import com.chad.demo.random.util.Logger;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * No comment for you. yeah, come on, bite me~
@@ -23,6 +28,10 @@ public class RenderManager implements SurfaceHolder.Callback {
 
     private RenderThread mRenderThread;
 
+    private Context mContext;
+
+    private List<IRender> mRenders = new ArrayList<>();
+
     public void init(SurfaceView surfaceView) {
         mRenderThread = new RenderThread(this);
         mHolder = surfaceView.getHolder();
@@ -33,6 +42,22 @@ public class RenderManager implements SurfaceHolder.Callback {
         surfaceView.setKeepScreenOn(true);
 
         mAttached = true;
+
+        mContext = surfaceView.getContext();
+    }
+
+    public void addRender(IRender render) {
+        if (render == null) {
+            return;
+        }
+        mRenders.add(render);
+    }
+
+    public void removeRender(IRender render) {
+        if (render == null) {
+            return;
+        }
+        mRenders.remove(render);
     }
 
     @Override
@@ -41,6 +66,8 @@ public class RenderManager implements SurfaceHolder.Callback {
         Logger.e(TAG, "surfaceCreated");
 
         mCreated = true;
+
+        mHolder = holder;
 
         if (mPendingStart) {
             startRenderInternal();
@@ -119,5 +146,13 @@ public class RenderManager implements SurfaceHolder.Callback {
 
     int getHeight() {
         return mHeight;
+    }
+
+    Context getContext() {
+        return mContext;
+    }
+
+    List<IRender> getRenders() {
+        return mRenders;
     }
 }

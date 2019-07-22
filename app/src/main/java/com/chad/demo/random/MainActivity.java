@@ -15,17 +15,33 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().hide();
-        }
+//        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+//                WindowManager.LayoutParams.FLAG_FULLSCREEN);
+//        if (getSupportActionBar() != null) {
+//            getSupportActionBar().hide();
+//        }
 
         setContentView(R.layout.activity_main);
 
         mPresenter = new Presenter();
         mPresenter.init((SurfaceView)findViewById(R.id.surface));
         mPresenter.startRender();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (mPresenter != null) {
+            mPresenter.onPause();
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (mPresenter != null) {
+            mPresenter.onResume();
+        }
     }
 
     @Override

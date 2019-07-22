@@ -6,7 +6,7 @@ import android.graphics.Paint;
 import android.graphics.PointF;
 
 import com.chad.demo.random.mgr.MovePolicy;
-import com.chad.demo.random.model.IDrawModel;
+import com.chad.demo.random.model.IRobot;
 import com.chad.demo.random.model.MoveModel;
 import com.chad.demo.random.model.Robot;
 import com.chad.demo.random.util.Direction;
@@ -16,9 +16,9 @@ import com.chad.demo.random.util.Direction;
  * <p>
  * Created by chad on 2019-06-28.
  */
-public class Render implements IRender {
+public class RandomRender implements IRender {
 
-    private static final String TAG = Render.class.getSimpleName();
+    private static final String TAG = RandomRender.class.getSimpleName();
 
     private Paint mPaint;
     private Paint mBgPaint;
@@ -30,15 +30,15 @@ public class Render implements IRender {
     private int mWidth;
     private int mHeigth;
 
-    private IDrawModel mDrawModel;
+    private IRobot mRobot;
 
     private MovePolicy mPolicy;
 
     private MoveModel mMoveModel;
 
-    public Render(Robot robo) {
+    public RandomRender(Robot robo) {
 
-        mDrawModel = robo;
+        mRobot = robo;
 
         mPaint = new Paint();
         mPaint.setAntiAlias(true);
@@ -63,8 +63,8 @@ public class Render implements IRender {
 
 
     @Override
-    public void setDrawModel(IDrawModel model) {
-        mDrawModel = model;
+    public void setRobot(IRobot model) {
+        mRobot = model;
     }
 
     @Override
@@ -75,6 +75,7 @@ public class Render implements IRender {
         mMoveModel.setRange(width, height);
 
         mMoveModel.setPosition(width / 2f, height / 2f, Direction.GO_RIGHT);
+
     }
 
     @Override

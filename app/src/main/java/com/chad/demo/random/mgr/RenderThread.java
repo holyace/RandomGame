@@ -1,13 +1,19 @@
 package com.chad.demo.random.mgr;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
-import android.graphics.Color;
+import android.graphics.Matrix;
+import android.graphics.Paint;
 import android.view.SurfaceHolder;
 
+import com.chad.demo.random.R;
 import com.chad.demo.random.model.Robot;
 import com.chad.demo.random.render.IRender;
-import com.chad.demo.random.render.Render;
+import com.chad.demo.random.render.RandomRender;
 import com.chad.demo.random.util.Logger;
+
+import java.util.List;
 
 /**
  * No comment for you. yeah, come on, bite me~
@@ -29,25 +35,32 @@ public class RenderThread implements Runnable {
 
     private Thread mThread;
 
-    private Robot mRobot;
-    private IRender mRender;
+//    private Robot mRobot;
+//    private IRender mRender;
 
-    private int mFPS = 30;
+    private int mFPS = 60;
 
     private long mTimeInteval = 1000 / mFPS;
 
-    private long mClock = 0;
+    private long mClock = -1;
 
     public RenderThread(RenderManager manager) {
         mRenderManager = manager;
-        mRobot = new Robot();
-        mRender = new Render(mRobot);
+//        mRobot = new Robot();
+//        mRender = new RandomRender(mRobot);
     }
 
     public void setCanvasSize(int width, int height) {
-        if (mRender != null) {
-            mRender.setCanvasSize(width, height);
+//        if (mRender != null) {
+//            mRender.setCanvasSize(width, height);
+//        }
+        List<IRender> renders = mRenderManager.getRenders();
+        if (renders != null && renders.size() > 0) {
+            for(IRender render : renders) {
+                render.setCanvasSize(width, height);
+            }
         }
+        initBg();
     }
 
     @Override
@@ -56,10 +69,12 @@ public class RenderThread implements Runnable {
         Logger.e(TAG, "startRenderThread");
 
         mClock = System.currentTimeMillis();
-
-        drawCommon();
+//        drawCommon();
 
         while (mRunning) {
+
+            long time = System.currentTimeMillis();
+
             if (mRenderManager.getSurfaceHolder() == null) {
                 Logger.e(TAG, "get null surface holder");
                 continue;
@@ -70,11 +85,23 @@ public class RenderThread implements Runnable {
                 Logger.e(TAG, "get null canvas. holder:%s", holder.toString());
                 continue;
             }
-            long start = 0, end = 0;
+            long start;
+            long end;
+
+            long end1 = 0;
             start = System.currentTimeMillis();
             try {
                 drawBackground(canvas);
-                mRender.render(canvas, mClock);
+
+                end1 = System.currentTimeMillis();
+
+//                mRender.render(canvas, mClock);
+                List<IRender> renders = mRenderManager.getRenders();
+                if (renders != null && renders.size() > 0) {
+                    for (IRender render : renders) {
+                        render.render(canvas, time - mClock);
+                    }
+                }
             }
             catch (Throwable t) {
                 t.printStackTrace();
@@ -84,7 +111,8 @@ public class RenderThread implements Runnable {
             }
             end = System.currentTimeMillis();
             int cost = (int) (end - start);
-//            Logger.e(TAG, "render cost : %d ms", cost);
+//            Logger.d(TAG, "render bg cost %d ms", (end1 - start));
+//            Logger.d(TAG, "render cost : %d ms", cost);
             long sleep = mTimeInteval - cost;
             if (sleep > 0) {
                 synchronized (sLock) {
@@ -96,7 +124,8 @@ public class RenderThread implements Runnable {
                 }
             }
             else {
-                Logger.e(TAG, "hit fps miss");
+                Logger.e(TAG, "hit fps miss, f:%dhz, t:%dms, cost %dms",
+                        mFPS, mTimeInteval, cost);
             }
         }
     }
@@ -148,7 +177,66 @@ public class RenderThread implements Runnable {
 
     }
 
+    private Bitmap mBg;
+    private Matrix mMatrix;
+    private Paint mPaint;
+
     private void drawBackground(Canvas canvas) {
-        canvas.drawColor(Color.WHITE);
+        if (mBg == null) {
+            initBg();
+        }
+        canvas.drawBitmap(mBg, mMatrix, mPaint);
+    }
+
+    private void initBg() {
+        BitmapFactory.Options ops = new BitmapFactory.Options();
+        ops.inPreferredConfig = Bitmap.Config.RGB_565;
+        mBg = BitmapFactory.decodeResource(mRenderManager.getContext().getResources(),
+                R.drawable.bg, ops);
+        int w = mRenderManager.getWidth();
+        int h = mRenderManager.getHeight();
+
+        int bw = mBg.getWidth();
+        int bh = mBg.getHeight();
+
+        Logger.d(TAG, "bitmap[%d, %d], surface[%d, %d]", bw, bh, w, h);
+
+        mMatrix = new Matrix();
+
+        float scale = 1f;
+        float translateX = 0;
+        float translateY = 0;
+        if (bw < w || bh < h) {
+            float sx = w / (float)bw;
+            float sy = h / (float)bh;
+
+            if (sx > sy) {
+                scale = sx;
+                translateY = (scale * bh - h) / 2f;
+            }
+            else {
+                scale = sy;
+                translateX = (scale * bw - w) / 2f;
+            }
+        }
+        else {
+            float sx = w / (float)bw;
+            float sy = h / (float)bh;
+
+            if (sx > sy) {
+                scale = sx;
+                translateY = (bh * scale - h) / 2f;
+            }
+            else {
+                scale = sy;
+                translateX = (bw * scale - w) / 2f;
+            }
+        }
+
+        mMatrix.postScale(scale, scale);
+        mMatrix.postTranslate(translateX, translateY);
+
+        mPaint = new Paint();
+        mPaint.setAntiAlias(true);
     }
 }

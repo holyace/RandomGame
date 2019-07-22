@@ -22,4 +22,6 @@ public interface IRobot {
     Bitmap getTexture();
 
     void setTexture(Bitmap bitmap);
+
+    int getSpeed();
 }

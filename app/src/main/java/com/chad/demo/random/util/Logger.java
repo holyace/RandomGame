@@ -9,7 +9,7 @@ import android.util.Log;
  */
 public class Logger {
 
-    private static int sLevel = Log.INFO;
+    private static int sLevel = Log.VERBOSE;
 
     private static boolean checkLevel(int level) {
         return level >= sLevel;

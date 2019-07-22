@@ -2,7 +2,7 @@ package com.chad.demo.random.render;
 
 import android.graphics.Canvas;
 
-import com.chad.demo.random.model.IDrawModel;
+import com.chad.demo.random.model.IRobot;
 
 /**
  * No comment for you. yeah, come on, bite me~
@@ -11,7 +11,7 @@ import com.chad.demo.random.model.IDrawModel;
  */
 public interface IRender {
 
-    void setDrawModel(IDrawModel model);
+    void setRobot(IRobot model);
 
     void setCanvasSize(int width, int height);
 
