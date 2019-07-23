@@ -8,6 +8,7 @@ import android.graphics.RectF;
 import com.chad.demo.random.R;
 import com.chad.demo.random.common.Global;
 import com.chad.demo.random.util.DisplayUtil;
+import com.chad.demo.random.util.RandomUtil;
 
 /**
  * No comment for you. yeah, come on, bite me~
@@ -22,6 +23,8 @@ public class BubbleRobot extends Robot {
 
     private int mResId = R.drawable.bubble;
 
+    private int mSpped;
+
     public BubbleRobot(IDrawModel model) {
         this(R.drawable.bubble,
                 DisplayUtil.dp2px(Global.getApp(), 25));
@@ -31,6 +34,9 @@ public class BubbleRobot extends Robot {
         mSize = new RectF(0, 0, size, size);
         mResId = id;
         mPosition = new RectF();
+
+        int mins = 50, maxs = 70;
+        mSpped = (int) (RandomUtil.getRandom().nextFloat() * (maxs - mins) + mins);
     }
 
     public void loadDrawable(Resources res) {
@@ -51,6 +57,6 @@ public class BubbleRobot extends Robot {
 
     @Override
     public int getSpeed() {
-        return 50;
+        return mSpped;
     }
 }

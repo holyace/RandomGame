@@ -1,5 +1,6 @@
 package com.chad.demo.random.mgr;
 
+import android.annotation.SuppressLint;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -8,9 +9,7 @@ import android.graphics.Paint;
 import android.view.SurfaceHolder;
 
 import com.chad.demo.random.R;
-import com.chad.demo.random.model.Robot;
 import com.chad.demo.random.render.IRender;
-import com.chad.demo.random.render.RandomRender;
 import com.chad.demo.random.util.Logger;
 
 import java.util.List;
@@ -63,6 +62,7 @@ public class RenderThread implements Runnable {
         initBg();
     }
 
+    @SuppressLint("NewApi")
     @Override
     public void run() {
 
@@ -80,7 +80,7 @@ public class RenderThread implements Runnable {
                 continue;
             }
             SurfaceHolder holder = mRenderManager.getSurfaceHolder();
-            Canvas canvas = holder.lockCanvas();
+            Canvas canvas = holder.lockHardwareCanvas();
             if (canvas == null) {
                 Logger.e(TAG, "get null canvas. holder:%s", holder.toString());
                 continue;

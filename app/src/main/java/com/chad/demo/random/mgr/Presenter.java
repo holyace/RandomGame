@@ -4,12 +4,12 @@ import android.content.Context;
 import android.view.SurfaceView;
 
 import com.chad.demo.random.R;
-import com.chad.demo.random.common.Global;
 import com.chad.demo.random.model.BubbleRobot;
 import com.chad.demo.random.model.Robot;
 import com.chad.demo.random.render.BubbleRender;
 import com.chad.demo.random.render.IRender;
 import com.chad.demo.random.util.DisplayUtil;
+import com.chad.demo.random.util.RandomUtil;
 
 /**
  * No comment for you. yeah, come on, bite me~
@@ -38,23 +38,38 @@ public class Presenter {
     }
 
     private void initRenders() {
-        IRender render = null;
+//        IRender render = null;
 //        render = new RandomRender(null);
 //        mRenderManager.addRender(render);
 
-        Robot robot = null;
-//        robot = new BubbleRobot(null);
+        int mins = DisplayUtil.dp2px(mContext, 10);
+        int maxs = DisplayUtil.dp2px(mContext, 25);
+
+        for (int i = 0; i < 10; i++) {
+            Robot robot = new BubbleRobot(RandomUtil.getRandom().nextBoolean() ?
+                    R.drawable.bubble : R.drawable.bubble2,
+                    (int) (RandomUtil.getRandom().nextFloat() * (maxs - mins) + mins));
+            ((BubbleRobot) robot).loadDrawable(mContext.getResources());
+
+            IRender render = new BubbleRender();
+            render.setRobot(robot);
+            mRenderManager.addRender(render);
+        }
+
+//        Robot robot = null;
+//        robot = new BubbleRobot(R.drawable.bubble,
+//                DisplayUtil.dp2px(mContext, 20));
 //        ((BubbleRobot) robot).loadDrawable(mContext.getResources());
 //        render = new BubbleRender();
 //        render.setRobot(robot);
 //        mRenderManager.addRender(render);
-
-        robot = new BubbleRobot(R.drawable.bubble2,
-                DisplayUtil.dp2px(mContext, 25));
-        ((BubbleRobot) robot).loadDrawable(mContext.getResources());
-        render = new BubbleRender();
-        render.setRobot(robot);
-        mRenderManager.addRender(render);
+//
+//        robot = new BubbleRobot(R.drawable.bubble2,
+//                DisplayUtil.dp2px(mContext, 25));
+//        ((BubbleRobot) robot).loadDrawable(mContext.getResources());
+//        render = new BubbleRender();
+//        render.setRobot(robot);
+//        mRenderManager.addRender(render);
     }
 
     public RenderManager getRenderManager() {

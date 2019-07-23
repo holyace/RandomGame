@@ -1,7 +1,5 @@
 package com.chad.demo.random.util;
 
-import java.util.Random;
-
 /**
  * No comment for you. yeah, come on, bite me~
  * <p>
@@ -9,10 +7,8 @@ import java.util.Random;
  */
 public class ProbabilityUtil {
 
-    private static Random sRandom = new Random();
-
     public static int random(float[] rates) {
-        float r = sRandom.nextFloat();
+        float r = RandomUtil.getRandom().nextFloat();
         float sum = 0;
         for (int i = 0; i < rates.length; i++) {
             sum += rates[i];

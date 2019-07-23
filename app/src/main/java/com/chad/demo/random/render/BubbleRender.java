@@ -7,6 +7,8 @@ import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.RectF;
 
+import com.chad.demo.random.util.RandomUtil;
+
 /**
  * No comment for you. yeah, come on, bite me~
  * <p>
@@ -21,6 +23,7 @@ public class BubbleRender extends BaseRender {
     private float b;
     private float t;//fai
     private float T;
+    private float dx;
 
     private Matrix mMatrix;
     private Paint mPaint;
@@ -36,20 +39,28 @@ public class BubbleRender extends BaseRender {
     @Override
     public void setCanvasSize(int width, int height) {
         super.setCanvasSize(width, height);
-        A = 2 * mRobot.getSize().right;
-        b = 3 * height / 4f;
-        T = 2 * width;
-        t = T / 4f;
+        A = mRobot.getSize().right;
+        float minb = 3 * height / 4f, maxb = 7 * height / 8f;
+        b = RandomUtil.getRandom().nextFloat() * (maxb - minb) + minb;
+        float minT = 2 * width, maxT = 3 * width;
+        T = RandomUtil.getRandom().nextFloat() * (maxT - minT) + minT;
+        float mint = 0, maxt = T / 4f;
+        t = RandomUtil.getRandom().nextFloat() * (maxt - mint) + mint;
         w = (float) (2 * Math.PI / T);
+        float maxdx = width, mindx = 0;
+        dx = RandomUtil.getRandom().nextFloat() * (maxdx - mindx) + mindx;
     }
 
     @Override
     public void render(Canvas canvas, long time) {
         super.render(canvas, time);
-        mPosition.x = mRobot.getSpeed() * time / 1000f;
-        if (mPosition.x >= mWidth) {
-            mPosition.x = mPosition.x % mWidth;
+        mPosition.x = (mRobot.getSpeed() * time / 1000f - dx - mRobot.getSize().right) % mWidth;
+        if (mPosition.x + mRobot.getSize().right / 2f < 0) {
+            return;
         }
+//        if (mPosition.x - 3 * mRobot.getSize().right / 4f > mWidth) {
+//            return;
+//        }
         mPosition.y = (float) (A * Math.sin(w * mPosition.x + t) + b);
 
 //        Logger.d(TAG, "pos[%.2f, %.2f], t:%d", mPosition.x, mPosition.y, time);
