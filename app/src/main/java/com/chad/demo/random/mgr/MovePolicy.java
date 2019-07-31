@@ -4,8 +4,7 @@ import com.chad.demo.random.model.MoveModel;
 import com.chad.demo.random.model.PolicyConfig;
 import com.chad.demo.random.model.PositionModel;
 import com.chad.demo.random.util.ProbabilityUtil;
-
-import java.util.Random;
+import com.chad.demo.random.util.Turn;
 
 /**
  * No comment for you. yeah, come on, bite me~
@@ -58,104 +57,133 @@ public class MovePolicy {
         return model.getPosition().x >= w;
     }
 
-    public MoveModel move(int w, int h, MoveModel mm) {
+    public MoveModel move(int w, int h, MoveModel mm, long time) {
+        if (!Turn.KEEP.equals(mm.getTurn())) {
+            mm.setTurn(Turn.KEEP);
+            mm.goAhead();
+            return mm;
+        }
         PositionModel model = mm.getNow();
         if (isLeftTopCorner(w, h, model)) {
             int index = ProbabilityUtil.random(mConfig.getConerRate());
             if (index == 0) {
+                mm.setTurn(Turn.FORCE_TURN);
                 mm.goRight(null);
             }
             else {
+                mm.setTurn(Turn.FORCE_TURN);
                 mm.goDown(null);
             }
         }
         else if (isRightTopCorner(w, h, model)) {
             int index = ProbabilityUtil.random(mConfig.getConerRate());
             if (index == 0) {
+                mm.setTurn(Turn.FORCE_TURN);
                 mm.goLeft(null);
             }
             else {
+                mm.setTurn(Turn.FORCE_TURN);
                 mm.goDown(null);
             }
         }
         else if (isBottomLeftCorner(w, h, model)) {
             int index = ProbabilityUtil.random(mConfig.getConerRate());
             if (index == 0) {
+                mm.setTurn(Turn.FORCE_TURN);
                 mm.goUp(null);
             }
             else {
+                mm.setTurn(Turn.FORCE_TURN);
                 mm.goRight(null);
             }
         }
         else if (isBottomRightCorner(w, h, model)) {
             int index = ProbabilityUtil.random(mConfig.getConerRate());
             if (index == 0) {
+                mm.setTurn(Turn.FORCE_TURN);
                 mm.goUp(null);
             }
             else {
+                mm.setTurn(Turn.FORCE_TURN);
                 mm.goLeft(null);
             }
         }
         else if (isLeftBoundary(w, h, model)) {
             int index = ProbabilityUtil.random(mConfig.getBoundaryRate());
             if (index == 0) {
+                mm.setTurn(Turn.FORCE_TURN);
                 mm.goDown(null);
             }
             else if (index == 1) {
+                mm.setTurn(Turn.FORCE_TURN);
                 mm.goUp(null);
             }
             else {
+                mm.setTurn(Turn.FORCE_TURN);
                 mm.goRight(null);
             }
         }
         else if (isTopBoundary(w, h, model)) {
             int index = ProbabilityUtil.random(mConfig.getBoundaryRate());
             if (index == 0) {
+                mm.setTurn(Turn.FORCE_TURN);
                 mm.goLeft(null);
             }
             else if (index == 1) {
+                mm.setTurn(Turn.FORCE_TURN);
                 mm.goRight(null);
             }
             else {
+                mm.setTurn(Turn.FORCE_TURN);
                 mm.goDown(null);
             }
         }
         else if (isRightBoundary(w, h, model)) {
             int index = ProbabilityUtil.random(mConfig.getBoundaryRate());
             if (index == 0) {
+                mm.setTurn(Turn.FORCE_TURN);
                 mm.goUp(null);
             }
             else if (index == 1) {
+                mm.setTurn(Turn.FORCE_TURN);
                 mm.goDown(null);
             }
             else {
+                mm.setTurn(Turn.FORCE_TURN);
                 mm.goLeft(null);
             }
         }
         else if (isBottomBoundary(w, h, model)) {
             int index = ProbabilityUtil.random(mConfig.getBoundaryRate());
             if (index == 0) {
+                mm.setTurn(Turn.FORCE_TURN);
                 mm.goLeft(null);
             }
             else if (index == 1) {
+                mm.setTurn(Turn.FORCE_TURN);
                 mm.goRight(null);
             }
             else {
+                mm.setTurn(Turn.FORCE_TURN);
                 mm.goUp(null);
             }
         }
         else {
             int index = ProbabilityUtil.random(mConfig.getNormalRate());
             if (index == 0) {
+                mm.setTurn(Turn.TURN_LEFT);
                 mm.turnLeft();
             }
             else if (index == 1) {
+                mm.setTurn(Turn.TURN_RIGHT);
                 mm.turnRight();
             }
             else if (index == 2) {
+                mm.setTurn(Turn.TURN_BACK);
                 mm.turnBack();
             }
             else {
+                mm.setTurn(Turn.KEEP);
                 mm.goAhead();
             }
         }

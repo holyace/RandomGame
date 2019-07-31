@@ -8,6 +8,7 @@ package com.chad.demo.random.util;
 public enum  Turn {
 
     KEEP("KEEP"),
+    FORCE_TURN("FORCE_TURN"),
     TURN_LEFT("TURN_LEFT"),
     TURN_RIGHT("TURN_RIGHT"),
     TURN_BACK("TURN_BACK");

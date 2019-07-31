@@ -8,6 +8,7 @@ import com.chad.demo.random.model.BubbleRobot;
 import com.chad.demo.random.model.Robot;
 import com.chad.demo.random.render.BubbleRender;
 import com.chad.demo.random.render.IRender;
+import com.chad.demo.random.render.RandomRender;
 import com.chad.demo.random.util.DisplayUtil;
 import com.chad.demo.random.util.RandomUtil;
 
@@ -38,9 +39,9 @@ public class Presenter {
     }
 
     private void initRenders() {
-//        IRender render = null;
-//        render = new RandomRender(null);
-//        mRenderManager.addRender(render);
+        IRender render = null;
+        render = new RandomRender(null);
+        mRenderManager.addRender(render);
 
         int mins = DisplayUtil.dp2px(mContext, 10);
         int maxs = DisplayUtil.dp2px(mContext, 25);
@@ -51,25 +52,11 @@ public class Presenter {
                     (int) (RandomUtil.getRandom().nextFloat() * (maxs - mins) + mins));
             ((BubbleRobot) robot).loadDrawable(mContext.getResources());
 
-            IRender render = new BubbleRender();
+            render = new BubbleRender();
             render.setRobot(robot);
             mRenderManager.addRender(render);
         }
 
-//        Robot robot = null;
-//        robot = new BubbleRobot(R.drawable.bubble,
-//                DisplayUtil.dp2px(mContext, 20));
-//        ((BubbleRobot) robot).loadDrawable(mContext.getResources());
-//        render = new BubbleRender();
-//        render.setRobot(robot);
-//        mRenderManager.addRender(render);
-//
-//        robot = new BubbleRobot(R.drawable.bubble2,
-//                DisplayUtil.dp2px(mContext, 25));
-//        ((BubbleRobot) robot).loadDrawable(mContext.getResources());
-//        render = new BubbleRender();
-//        render.setRobot(robot);
-//        mRenderManager.addRender(render);
     }
 
     public RenderManager getRenderManager() {

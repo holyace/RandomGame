@@ -5,6 +5,7 @@ import android.graphics.Path;
 import android.graphics.PointF;
 
 import com.chad.demo.random.util.Direction;
+import com.chad.demo.random.util.Turn;
 
 /**
  * No comment for you. yeah, come on, bite me~
@@ -15,6 +16,8 @@ public class MoveModel {
 
     private PositionModel old;
     private PositionModel now;
+
+    private Turn turn = Turn.KEEP;
 
     private Path path;
 
@@ -213,6 +216,10 @@ public class MoveModel {
             pos.x = 0;
         }
 
+        if (od == null) {
+            now.setDirection(Direction.GO_LEFT);
+        }
+
         if (od == Direction.GO_UP) {
             pos.y -= speed;
             if (pos.y < 0) {
@@ -248,6 +255,10 @@ public class MoveModel {
         pos.x += speed;
         if (pos.x > width) {
             pos.x = width;
+        }
+
+        if (od == null) {
+            now.setDirection(Direction.GO_RIGHT);
         }
 
         if (od == Direction.GO_UP) {
@@ -287,6 +298,10 @@ public class MoveModel {
             pos.y = 0;
         }
 
+        if (od == null) {
+            now.setDirection(Direction.GO_UP);
+        }
+
         if (od == Direction.GO_LEFT) {
             pos.x -= speed;
             if (pos.x < 0) {
@@ -324,6 +339,10 @@ public class MoveModel {
             pos.y = height;
         }
 
+        if (od == null) {
+            now.setDirection(Direction.GO_DOWN);
+        }
+
         if (od == Direction.GO_LEFT) {
             pos.x -= speed;
             if (pos.x < 0) {
@@ -347,5 +366,13 @@ public class MoveModel {
         else {
             path.lineTo(pos.x, pos.y);
         }
+    }
+
+    public Turn getTurn() {
+        return turn;
+    }
+
+    public void setTurn(Turn turn) {
+        this.turn = turn;
     }
 }

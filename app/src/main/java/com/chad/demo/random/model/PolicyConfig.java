@@ -14,7 +14,7 @@ public class PolicyConfig {
     private float[] conerRate;
 
     public PolicyConfig() {
-        normalRate = new float[] {0.075f, 0.075f, 0.05f, 0.8f};
+        normalRate = new float[] {0.04f, 0.04f, 0.02f, 0.9f};
         boundaryRate = new float[] {1 / 3f, 1 / 3f, 1 / 3f};
         conerRate = new float[] { 0.5f, 0.5f};
     }

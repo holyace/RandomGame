@@ -69,7 +69,6 @@ public class RenderThread implements Runnable {
         Logger.e(TAG, "startRenderThread");
 
         mClock = System.currentTimeMillis();
-//        drawCommon();
 
         while (mRunning) {
 
@@ -156,34 +155,13 @@ public class RenderThread implements Runnable {
         mClock = 1000 / fps;
     }
 
-    private void drawCommon() {
-        SurfaceHolder holder = mRenderManager.getSurfaceHolder();
-        if (holder == null) {
-            return;
-        }
-        Canvas canvas = holder.lockCanvas();
-        if (canvas == null) {
-            return;
-        }
-        try {
-            drawBackground(canvas);
-        }
-        catch (Throwable t) {
-            t.printStackTrace();
-        }
-        finally {
-            holder.unlockCanvasAndPost(canvas);
-        }
-
-    }
-
     private Bitmap mBg;
     private Matrix mMatrix;
     private Paint mPaint;
 
     private void drawBackground(Canvas canvas) {
         if (mBg == null) {
-            initBg();
+            return;
         }
         canvas.drawBitmap(mBg, mMatrix, mPaint);
     }
@@ -199,39 +177,31 @@ public class RenderThread implements Runnable {
         int bw = mBg.getWidth();
         int bh = mBg.getHeight();
 
-        Logger.d(TAG, "bitmap[%d, %d], surface[%d, %d]", bw, bh, w, h);
-
-        mMatrix = new Matrix();
+        if (mMatrix == null) {
+            mMatrix = new Matrix();
+        }
+        else {
+            mMatrix.reset();
+        }
 
         float scale = 1f;
         float translateX = 0;
         float translateY = 0;
-        if (bw < w || bh < h) {
-            float sx = w / (float)bw;
-            float sy = h / (float)bh;
 
-            if (sx > sy) {
-                scale = sx;
-                translateY = (scale * bh - h) / 2f;
-            }
-            else {
-                scale = sy;
-                translateX = (scale * bw - w) / 2f;
-            }
-        }
-        else {
-            float sx = w / (float)bw;
-            float sy = h / (float)bh;
+        float sx = w / (float)bw;
+        float sy = h / (float)bh;
 
-            if (sx > sy) {
-                scale = sx;
-                translateY = (bh * scale - h) / 2f;
-            }
-            else {
-                scale = sy;
-                translateX = (bw * scale - w) / 2f;
-            }
+        scale = Math.max(sx, sy);
+
+        if (bw * scale > w) {
+            translateX = (w - bw * scale) / 2f;
         }
+        if (bh * scale > h) {
+            translateY = (h - bh * scale) / 2f;
+        }
+
+        Logger.d(TAG, "bitmap[%d, %d], surface[%d, %d], \n\tsx:%.2f, sy:%.2f, scale:%.2f, translateX:%.2f, translateY:%.2f",
+                bw, bh, w, h, sx, sy, scale, translateX, translateY);
 
         mMatrix.postScale(scale, scale);
         mMatrix.postTranslate(translateX, translateY);

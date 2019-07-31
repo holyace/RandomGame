@@ -81,7 +81,7 @@ public class RandomRender implements IRender {
     @Override
     public void render(Canvas canvas, long time) {
 
-        mPolicy.move(mWidth, mHeigth, mMoveModel);
+        mPolicy.move(mWidth, mHeigth, mMoveModel, time);
 
         drawMove(canvas, mMoveModel);
 
