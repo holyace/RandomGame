@@ -19,6 +19,9 @@ public class RenderManager implements SurfaceHolder.Callback {
 
     private static final String TAG = RenderManager.class.getSimpleName();
 
+    private static final int MAX_FPS = 60;
+    private static final int MIN_FPS = 12;
+
     private boolean mAttached = false;
     private boolean mCreated = false;
     private boolean mPendingStart = false;
@@ -32,6 +35,9 @@ public class RenderManager implements SurfaceHolder.Callback {
 
     private List<IRender> mRenders = new ArrayList<>();
 
+    int mFPS = 60;
+    long mTimeInteval = 1000 / mFPS;
+
     public void init(SurfaceView surfaceView) {
         mRenderThread = new RenderThread(this);
         mHolder = surfaceView.getHolder();
@@ -44,6 +50,18 @@ public class RenderManager implements SurfaceHolder.Callback {
         mAttached = true;
 
         mContext = surfaceView.getContext();
+    }
+
+    public void setFPS(int fps) {
+
+        if (fps < MIN_FPS) {
+            fps = MIN_FPS;
+        }
+        if (fps > MAX_FPS) {
+            fps = MAX_FPS;
+        }
+        mFPS = fps;
+        mTimeInteval = 1000 / mFPS;
     }
 
     public void addRender(IRender render) {

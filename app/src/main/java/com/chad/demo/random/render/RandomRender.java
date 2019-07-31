@@ -25,7 +25,7 @@ public class RandomRender implements IRender {
 
     private float mR;
 
-    private float mSpeed = 10;
+    private float mSpeed = 3;
 
     private int mWidth;
     private int mHeigth;

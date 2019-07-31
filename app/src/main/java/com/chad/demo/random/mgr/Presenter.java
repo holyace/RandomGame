@@ -34,6 +34,7 @@ public class Presenter {
             mRenderManager = new RenderManager();
         }
         mRenderManager.init(mSurfaceView);
+        mRenderManager.setFPS(30);
 
         initRenders();
     }

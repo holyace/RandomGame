@@ -23,9 +23,6 @@ public class RenderThread implements Runnable {
 
     private static final String TAG = RenderThread.class.getSimpleName();
 
-    private static final int MAX_FPS = 60;
-    private static final int MIN_FPS = 12;
-
     private static byte[] sLock = new byte[0];
 
     private RenderManager mRenderManager;
@@ -36,10 +33,6 @@ public class RenderThread implements Runnable {
 
 //    private Robot mRobot;
 //    private IRender mRender;
-
-    private int mFPS = 60;
-
-    private long mTimeInteval = 1000 / mFPS;
 
     private long mClock = -1;
 
@@ -112,7 +105,7 @@ public class RenderThread implements Runnable {
             int cost = (int) (end - start);
 //            Logger.d(TAG, "render bg cost %d ms", (end1 - start));
 //            Logger.d(TAG, "render cost : %d ms", cost);
-            long sleep = mTimeInteval - cost;
+            long sleep = mRenderManager.mTimeInteval - cost;
             if (sleep > 0) {
                 synchronized (sLock) {
                     try {
@@ -124,7 +117,7 @@ public class RenderThread implements Runnable {
             }
             else {
                 Logger.e(TAG, "hit fps miss, f:%dhz, t:%dms, cost %dms",
-                        mFPS, mTimeInteval, cost);
+                        mRenderManager.mFPS, mRenderManager.mTimeInteval, cost);
             }
         }
     }
@@ -142,17 +135,6 @@ public class RenderThread implements Runnable {
         synchronized (sLock) {
             sLock.notifyAll();
         }
-    }
-
-    public void setFPS(int fps) {
-        if (fps < MIN_FPS) {
-            fps = MIN_FPS;
-        }
-        if (fps > MAX_FPS) {
-            fps = MAX_FPS;
-        }
-        mFPS = fps;
-        mClock = 1000 / fps;
     }
 
     private Bitmap mBg;
