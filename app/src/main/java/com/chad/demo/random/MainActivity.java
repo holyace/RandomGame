@@ -4,7 +4,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.SurfaceView;
 
-import com.chad.demo.random.mgr.Presenter;
+import com.chad.demo.random.controller.Presenter;
 
 public class MainActivity extends AppCompatActivity {
 

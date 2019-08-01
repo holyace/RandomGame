@@ -1,14 +1,14 @@
-package com.chad.demo.random.mgr;
+package com.chad.demo.random.controller;
 
 import android.content.Context;
 import android.view.SurfaceView;
 
 import com.chad.demo.random.R;
+import com.chad.demo.random.mgr.RenderManager;
 import com.chad.demo.random.model.BubbleRobot;
 import com.chad.demo.random.model.Robot;
 import com.chad.demo.random.render.BubbleRender;
 import com.chad.demo.random.render.IRender;
-import com.chad.demo.random.render.RandomRender;
 import com.chad.demo.random.util.DisplayUtil;
 import com.chad.demo.random.util.RandomUtil;
 
