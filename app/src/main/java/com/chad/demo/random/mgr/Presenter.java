@@ -41,8 +41,8 @@ public class Presenter {
 
     private void initRenders() {
         IRender render = null;
-        render = new RandomRender(null);
-        mRenderManager.addRender(render);
+//        render = new RandomRender(null);
+//        mRenderManager.addRender(render);
 
         int mins = DisplayUtil.dp2px(mContext, 10);
         int maxs = DisplayUtil.dp2px(mContext, 25);

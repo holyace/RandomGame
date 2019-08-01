@@ -39,10 +39,10 @@ public class BubbleRender extends BaseRender {
     @Override
     public void setCanvasSize(int width, int height) {
         super.setCanvasSize(width, height);
-        A = mRobot.getSize().right;
+        A = 1.5f * mRobot.getSize().right;
         float minb = 3 * height / 4f, maxb = 7 * height / 8f;
         b = RandomUtil.getRandom().nextFloat() * (maxb - minb) + minb;
-        float minT = 2 * width, maxT = 3 * width;
+        float minT = 1.5f * width, maxT = 2.5f * width;
         T = RandomUtil.getRandom().nextFloat() * (maxT - minT) + minT;
         float mint = 0, maxt = T / 4f;
         t = RandomUtil.getRandom().nextFloat() * (maxt - mint) + mint;
