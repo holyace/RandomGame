@@ -1,4 +1,4 @@
-package com.chad.demo.random.render;
+package com.chad.demo.random.render.impl;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -7,6 +7,7 @@ import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.RectF;
 
+import com.chad.demo.random.render.BaseRender;
 import com.chad.demo.random.util.RandomUtil;
 
 /**

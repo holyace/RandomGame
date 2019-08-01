@@ -11,18 +11,18 @@ public class PolicyConfig {
 
     private float[] boundaryRate;
 
-    private float[] conerRate;
+    private float[] cornerRate;
 
     public PolicyConfig() {
         normalRate = new float[] {0.04f, 0.04f, 0.02f, 0.9f};
         boundaryRate = new float[] {1 / 3f, 1 / 3f, 1 / 3f};
-        conerRate = new float[] { 0.5f, 0.5f};
+        cornerRate = new float[] { 0.5f, 0.5f};
     }
 
-    public PolicyConfig(float[] normalRate, float[] boundaryRate, float[] conerRate) {
+    public PolicyConfig(float[] normalRate, float[] boundaryRate, float[] cornerRate) {
         this.normalRate = normalRate;
         this.boundaryRate = boundaryRate;
-        this.conerRate = conerRate;
+        this.cornerRate = cornerRate;
     }
 
     public float[] getNormalRate() {
@@ -41,11 +41,11 @@ public class PolicyConfig {
         this.boundaryRate = boundaryRate;
     }
 
-    public float[] getConerRate() {
-        return conerRate;
+    public float[] getCornerRate() {
+        return cornerRate;
     }
 
-    public void setConerRate(float[] conerRate) {
-        this.conerRate = conerRate;
+    public void setCornerRate(float[] cornerRate) {
+        this.cornerRate = cornerRate;
     }
 }

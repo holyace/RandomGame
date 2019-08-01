@@ -1,4 +1,4 @@
-package com.chad.demo.random.render;
+package com.chad.demo.random.render.impl;
 
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -9,6 +9,7 @@ import com.chad.demo.random.mgr.MovePolicy;
 import com.chad.demo.random.model.IRobot;
 import com.chad.demo.random.model.MoveModel;
 import com.chad.demo.random.model.Robot;
+import com.chad.demo.random.render.IRender;
 import com.chad.demo.random.util.Direction;
 
 /**

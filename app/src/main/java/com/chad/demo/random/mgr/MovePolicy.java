@@ -65,7 +65,7 @@ public class MovePolicy {
         }
         PositionModel model = mm.getNow();
         if (isLeftTopCorner(w, h, model)) {
-            int index = ProbabilityUtil.random(mConfig.getConerRate());
+            int index = ProbabilityUtil.random(mConfig.getCornerRate());
             if (index == 0) {
                 mm.setTurn(Turn.FORCE_TURN);
                 mm.goRight(null);
@@ -76,7 +76,7 @@ public class MovePolicy {
             }
         }
         else if (isRightTopCorner(w, h, model)) {
-            int index = ProbabilityUtil.random(mConfig.getConerRate());
+            int index = ProbabilityUtil.random(mConfig.getCornerRate());
             if (index == 0) {
                 mm.setTurn(Turn.FORCE_TURN);
                 mm.goLeft(null);
@@ -87,7 +87,7 @@ public class MovePolicy {
             }
         }
         else if (isBottomLeftCorner(w, h, model)) {
-            int index = ProbabilityUtil.random(mConfig.getConerRate());
+            int index = ProbabilityUtil.random(mConfig.getCornerRate());
             if (index == 0) {
                 mm.setTurn(Turn.FORCE_TURN);
                 mm.goUp(null);
@@ -98,7 +98,7 @@ public class MovePolicy {
             }
         }
         else if (isBottomRightCorner(w, h, model)) {
-            int index = ProbabilityUtil.random(mConfig.getConerRate());
+            int index = ProbabilityUtil.random(mConfig.getCornerRate());
             if (index == 0) {
                 mm.setTurn(Turn.FORCE_TURN);
                 mm.goUp(null);
