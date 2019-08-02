@@ -1,4 +1,4 @@
-package com.chad.demo.random.util;
+package com.chad.demo.random.constant;
 
 /**
  * No comment for you. yeah, come on, bite me~

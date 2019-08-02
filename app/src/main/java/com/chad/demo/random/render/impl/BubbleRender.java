@@ -7,6 +7,7 @@ import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.RectF;
 
+import com.chad.demo.random.mgr.RenderManager;
 import com.chad.demo.random.render.BaseRender;
 import com.chad.demo.random.util.RandomUtil;
 
@@ -29,7 +30,13 @@ public class BubbleRender extends BaseRender {
     private Matrix mMatrix;
     private Paint mPaint;
 
-    public BubbleRender() {
+    public BubbleRender(RenderManager manager) {
+        super(manager);
+    }
+
+    @Override
+    protected void initRender() {
+        super.initRender();
 
         mPaint = new Paint();
         mPaint.setAntiAlias(true);

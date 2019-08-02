@@ -36,4 +36,5 @@ public class BitmapUtil {
         }
         return scale;
     }
+
 }

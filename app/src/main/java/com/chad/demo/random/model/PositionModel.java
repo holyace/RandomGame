@@ -2,7 +2,7 @@ package com.chad.demo.random.model;
 
 import android.graphics.PointF;
 
-import com.chad.demo.random.util.Direction;
+import com.chad.demo.random.constant.Direction;
 
 /**
  * No comment for you. yeah, come on, bite me~
@@ -13,7 +13,7 @@ public class PositionModel {
 
     private PointF position;
 
-    private Direction direction = Direction.GO_RIGHT;
+    private Direction direction = Direction.RIGHT;
 
     public PositionModel() {
         position = new PointF();

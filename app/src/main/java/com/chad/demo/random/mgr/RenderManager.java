@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
+import com.chad.demo.random.constant.Constant;
 import com.chad.demo.random.render.IRender;
 import com.chad.demo.random.util.Logger;
 
@@ -43,10 +44,6 @@ public class RenderManager implements SurfaceHolder.Callback {
         mHolder = surfaceView.getHolder();
         mHolder.addCallback(this);
 
-        surfaceView.setFocusable(true);
-        surfaceView.setFocusableInTouchMode(true);
-        surfaceView.setKeepScreenOn(true);
-
         mAttached = true;
 
         mContext = surfaceView.getContext();
@@ -81,7 +78,7 @@ public class RenderManager implements SurfaceHolder.Callback {
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
 
-        Logger.e(TAG, "surfaceCreated");
+        Logger.i(Constant.MODULE, TAG, "surfaceCreated");
 
         mCreated = true;
 
@@ -98,7 +95,7 @@ public class RenderManager implements SurfaceHolder.Callback {
     @Override
     public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
 
-        Logger.e(TAG, "surfaceChanged w:%d, h:%d", width, height);
+        Logger.i(Constant.MODULE, TAG, "surfaceChanged w:%d, h:%d", width, height);
 
         int oldw = mWidth;
         int oldh = mHeight;
@@ -110,7 +107,7 @@ public class RenderManager implements SurfaceHolder.Callback {
     @Override
     public void surfaceDestroyed(SurfaceHolder holder) {
 
-        Logger.e(TAG, "surfaceDestroyed");
+        Logger.i(Constant.MODULE, TAG, "surfaceDestroyed");
 
         if (mHolder != null) {
             mHolder.removeCallback(this);
@@ -166,11 +163,12 @@ public class RenderManager implements SurfaceHolder.Callback {
         return mHeight;
     }
 
-    Context getContext() {
+    public Context getContext() {
         return mContext;
     }
 
     List<IRender> getRenders() {
         return mRenders;
     }
+
 }

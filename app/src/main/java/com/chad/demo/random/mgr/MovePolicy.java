@@ -4,7 +4,7 @@ import com.chad.demo.random.model.MoveModel;
 import com.chad.demo.random.model.PolicyConfig;
 import com.chad.demo.random.model.PositionModel;
 import com.chad.demo.random.util.ProbabilityUtil;
-import com.chad.demo.random.util.Turn;
+import com.chad.demo.random.constant.Turn;
 
 /**
  * No comment for you. yeah, come on, bite me~

@@ -1,4 +1,4 @@
-package com.chad.demo.random.util;
+package com.chad.demo.random.constant;
 
 /**
  * No comment for you. yeah, come on, bite me~
@@ -7,10 +7,10 @@ package com.chad.demo.random.util;
  */
 public enum Direction {
 
-    GO_UP("GO_UP"),
-    GO_RIGHT("GO_RIGHT"),
-    GO_DOWN("GO_DOWN"),
-    GO_LEFT("GO_LEFT");
+    UP("UP"),
+    RIGHT("RIGHT"),
+    DOWN("DOWN"),
+    LEFT("LEFT");
 
     private String msg;
 

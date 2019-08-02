@@ -50,4 +50,9 @@ public class MainActivity extends AppCompatActivity {
             mPresenter.onDestroy();
         }
     }
+
+    @Override
+    public void onBackPressed() {
+//        super.onBackPressed();
+    }
 }

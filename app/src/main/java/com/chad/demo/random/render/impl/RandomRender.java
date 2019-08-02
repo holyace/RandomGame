@@ -10,7 +10,7 @@ import com.chad.demo.random.model.IRobot;
 import com.chad.demo.random.model.MoveModel;
 import com.chad.demo.random.model.Robot;
 import com.chad.demo.random.render.IRender;
-import com.chad.demo.random.util.Direction;
+import com.chad.demo.random.constant.Direction;
 
 /**
  * No comment for you. yeah, come on, bite me~
@@ -75,7 +75,7 @@ public class RandomRender implements IRender {
 
         mMoveModel.setRange(width, height);
 
-        mMoveModel.setPosition(width / 2f, height / 2f, Direction.GO_RIGHT);
+        mMoveModel.setPosition(width / 2f, height / 2f, Direction.RIGHT);
 
     }
 

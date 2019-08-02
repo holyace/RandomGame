@@ -9,6 +9,7 @@ import android.graphics.Paint;
 import android.view.SurfaceHolder;
 
 import com.chad.demo.random.R;
+import com.chad.demo.random.constant.Constant;
 import com.chad.demo.random.render.IRender;
 import com.chad.demo.random.util.Logger;
 
@@ -59,7 +60,7 @@ public class RenderThread implements Runnable {
     @Override
     public void run() {
 
-        Logger.e(TAG, "startRenderThread");
+        Logger.i(Constant.MODULE, TAG, "startRenderThread");
 
         mClock = System.currentTimeMillis();
 
@@ -68,7 +69,7 @@ public class RenderThread implements Runnable {
             long time = System.currentTimeMillis();
 
             if (mRenderManager.getSurfaceHolder() == null) {
-                Logger.e(TAG, "get null surface holder");
+                Logger.w(Constant.MODULE, TAG, "get null surface holder");
                 continue;
             }
             SurfaceHolder holder = mRenderManager.getSurfaceHolder();
@@ -91,7 +92,11 @@ public class RenderThread implements Runnable {
                 List<IRender> renders = mRenderManager.getRenders();
                 if (renders != null && renders.size() > 0) {
                     for (IRender render : renders) {
-                        render.render(canvas, time - mClock);
+                        try {
+                            render.render(canvas, time - mClock);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
                     }
                 }
             }
@@ -116,7 +121,7 @@ public class RenderThread implements Runnable {
                 }
             }
             else {
-                Logger.e(TAG, "hit fps miss, f:%dhz, t:%dms, cost %dms",
+                Logger.w(Constant.MODULE, TAG, "hit fps miss, f:%dhz, t:%dms, cost %dms",
                         mRenderManager.mFPS, mRenderManager.mTimeInteval, cost);
             }
         }
@@ -182,7 +187,7 @@ public class RenderThread implements Runnable {
             translateY = (h - bh * scale) / 2f;
         }
 
-        Logger.d(TAG, "bitmap[%d, %d], surface[%d, %d], \n\tsx:%.2f, sy:%.2f, scale:%.2f, translateX:%.2f, translateY:%.2f",
+        Logger.d(Constant.MODULE, TAG, "bitmap[%d, %d], surface[%d, %d], \n\tsx:%.2f, sy:%.2f, scale:%.2f, translateX:%.2f, translateY:%.2f",
                 bw, bh, w, h, sx, sy, scale, translateX, translateY);
 
         mMatrix.postScale(scale, scale);

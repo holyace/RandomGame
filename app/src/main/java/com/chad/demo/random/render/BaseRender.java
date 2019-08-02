@@ -1,8 +1,10 @@
 package com.chad.demo.random.render;
 
+import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.PointF;
 
+import com.chad.demo.random.mgr.RenderManager;
 import com.chad.demo.random.model.IRobot;
 
 /**
@@ -19,8 +21,21 @@ public class BaseRender implements IRender {
 
     protected PointF mPosition;
 
-    public BaseRender() {
+    protected RenderManager mRenderManager;
+
+    protected Context mContext;
+
+    public BaseRender(RenderManager manager) {
         mPosition = new PointF();
+        mRenderManager = manager;
+
+        mContext = mRenderManager.getContext();
+
+        initRender();
+    }
+
+    protected void initRender() {
+
     }
 
     @Override

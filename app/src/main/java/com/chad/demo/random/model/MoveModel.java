@@ -4,8 +4,8 @@ package com.chad.demo.random.model;
 import android.graphics.Path;
 import android.graphics.PointF;
 
-import com.chad.demo.random.util.Direction;
-import com.chad.demo.random.util.Turn;
+import com.chad.demo.random.constant.Direction;
+import com.chad.demo.random.constant.Turn;
 
 /**
  * No comment for you. yeah, come on, bite me~
@@ -94,71 +94,71 @@ public class MoveModel {
     public void turnLeft() {
 
         switch (now.getDirection()) {
-            case GO_LEFT:
-                now.setDirection(Direction.GO_DOWN);
-                goDown(Direction.GO_LEFT);
+            case LEFT:
+                now.setDirection(Direction.DOWN);
+                goDown(Direction.LEFT);
                 break;
 
-            case GO_UP:
-                now.setDirection(Direction.GO_LEFT);
-                goLeft(Direction.GO_UP);
+            case UP:
+                now.setDirection(Direction.LEFT);
+                goLeft(Direction.UP);
                 break;
 
-            case GO_RIGHT:
-                now.setDirection(Direction.GO_UP);
-                goUp(Direction.GO_RIGHT);
+            case RIGHT:
+                now.setDirection(Direction.UP);
+                goUp(Direction.RIGHT);
                 break;
 
-            case GO_DOWN:
-                now.setDirection(Direction.GO_RIGHT);
-                goRight(Direction.GO_DOWN);
+            case DOWN:
+                now.setDirection(Direction.RIGHT);
+                goRight(Direction.DOWN);
                 break;
         }
     }
 
     public void turnRight() {
         switch (now.getDirection()) {
-            case GO_LEFT:
-                now.setDirection(Direction.GO_UP);
-                goUp(Direction.GO_LEFT);
+            case LEFT:
+                now.setDirection(Direction.UP);
+                goUp(Direction.LEFT);
                 break;
 
-            case GO_UP:
-                now.setDirection(Direction.GO_RIGHT);
-                goRight(Direction.GO_UP);
+            case UP:
+                now.setDirection(Direction.RIGHT);
+                goRight(Direction.UP);
                 break;
 
-            case GO_RIGHT:
-                now.setDirection(Direction.GO_DOWN);
-                goDown(Direction.GO_RIGHT);
+            case RIGHT:
+                now.setDirection(Direction.DOWN);
+                goDown(Direction.RIGHT);
                 break;
 
-            case GO_DOWN:
-                now.setDirection(Direction.GO_LEFT);
-                goLeft(Direction.GO_DOWN);
+            case DOWN:
+                now.setDirection(Direction.LEFT);
+                goLeft(Direction.DOWN);
                 break;
         }
     }
 
     public void turnBack() {
         switch (now.getDirection()) {
-            case GO_LEFT:
-                now.setDirection(Direction.GO_RIGHT);
+            case LEFT:
+                now.setDirection(Direction.RIGHT);
                 goRight(null);
                 break;
 
-            case GO_UP:
-                now.setDirection(Direction.GO_DOWN);
+            case UP:
+                now.setDirection(Direction.DOWN);
                 goDown(null);
                 break;
 
-            case GO_RIGHT:
-                now.setDirection(Direction.GO_LEFT);
+            case RIGHT:
+                now.setDirection(Direction.LEFT);
                 goLeft(null);
                 break;
 
-            case GO_DOWN:
-                now.setDirection(Direction.GO_UP);
+            case DOWN:
+                now.setDirection(Direction.UP);
                 goUp(null);
                 break;
         }
@@ -171,28 +171,28 @@ public class MoveModel {
         PointF pos = now.getPosition();
 
         switch (now.getDirection()) {
-            case GO_LEFT:
+            case LEFT:
                 pos.x -= speed;
                 if (pos.x < 0) {
                     pos.x = 0;
                 }
                 break;
 
-            case GO_UP:
+            case UP:
                 pos.y -= speed;
                 if (pos.y < 0) {
                     pos.y = 0;
                 }
                 break;
 
-            case GO_RIGHT:
+            case RIGHT:
                 pos.x += speed;
                 if (pos.x > width) {
                     pos.x = width;
                 }
                 break;
 
-            case GO_DOWN:
+            case DOWN:
                 pos.y += speed;
                 if (pos.y > height) {
                     pos.y = height;
@@ -217,10 +217,10 @@ public class MoveModel {
         }
 
         if (od == null) {
-            now.setDirection(Direction.GO_LEFT);
+            now.setDirection(Direction.LEFT);
         }
 
-        if (od == Direction.GO_UP) {
+        if (od == Direction.UP) {
             pos.y -= speed;
             if (pos.y < 0) {
                 pos.y = 0;
@@ -230,7 +230,7 @@ public class MoveModel {
                     pos.y + (op.y - pos.y) / 3f,
                     pos.x, pos.y);
         }
-        else if (od == Direction.GO_DOWN) {
+        else if (od == Direction.DOWN) {
             pos.y += speed;
             if (pos.y > height) {
                 pos.y = height;
@@ -258,10 +258,10 @@ public class MoveModel {
         }
 
         if (od == null) {
-            now.setDirection(Direction.GO_RIGHT);
+            now.setDirection(Direction.RIGHT);
         }
 
-        if (od == Direction.GO_UP) {
+        if (od == Direction.UP) {
             pos.y -= speed;
             if (pos.y < 0) {
                 pos.y = 0;
@@ -271,7 +271,7 @@ public class MoveModel {
                     pos.y + (op.y - pos.y) / 3f,
                     pos.x, pos.y);
         }
-        else if (od == Direction.GO_DOWN) {
+        else if (od == Direction.DOWN) {
             pos.y += speed;
             if (pos.y > height) {
                 pos.y = height;
@@ -299,10 +299,10 @@ public class MoveModel {
         }
 
         if (od == null) {
-            now.setDirection(Direction.GO_UP);
+            now.setDirection(Direction.UP);
         }
 
-        if (od == Direction.GO_LEFT) {
+        if (od == Direction.LEFT) {
             pos.x -= speed;
             if (pos.x < 0) {
                 pos.x = 0;
@@ -312,7 +312,7 @@ public class MoveModel {
                     op.y - (op.y - pos.y) / 3f,
                     pos.x, pos.y);
         }
-        else if (od == Direction.GO_RIGHT) {
+        else if (od == Direction.RIGHT) {
             pos.x += speed;
             if (pos.x > width) {
                 pos.x = width;
@@ -340,10 +340,10 @@ public class MoveModel {
         }
 
         if (od == null) {
-            now.setDirection(Direction.GO_DOWN);
+            now.setDirection(Direction.DOWN);
         }
 
-        if (od == Direction.GO_LEFT) {
+        if (od == Direction.LEFT) {
             pos.x -= speed;
             if (pos.x < 0) {
                 pos.x = 0;
@@ -353,7 +353,7 @@ public class MoveModel {
                     op.y + (pos.y - op.y) / 3f,
                     pos.x, pos.y);
         }
-        else if (od == Direction.GO_RIGHT) {
+        else if (od == Direction.RIGHT) {
             pos.x += speed;
             if (pos.x > width) {
                 pos.x = width;

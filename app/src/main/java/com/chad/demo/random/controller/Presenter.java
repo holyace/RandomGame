@@ -4,11 +4,15 @@ import android.content.Context;
 import android.view.SurfaceView;
 
 import com.chad.demo.random.R;
+import com.chad.demo.random.event.EventManager;
+import com.chad.demo.random.event.TouchEventWrapper;
 import com.chad.demo.random.mgr.RenderManager;
 import com.chad.demo.random.model.BubbleRobot;
+import com.chad.demo.random.constant.EventType;
 import com.chad.demo.random.model.Robot;
-import com.chad.demo.random.render.impl.BubbleRender;
 import com.chad.demo.random.render.IRender;
+import com.chad.demo.random.render.impl.AppsRender;
+import com.chad.demo.random.render.impl.BubbleRender;
 import com.chad.demo.random.util.DisplayUtil;
 import com.chad.demo.random.util.RandomUtil;
 
@@ -23,13 +27,24 @@ public class Presenter {
     private RenderManager mRenderManager;
     private Context mContext;
 
-    public Presenter() {
+    private AppsRender mAppsRender;
 
+    private EventManager mEventManager;
+
+    public Presenter() {
+        mEventManager = EventManager.getInstance();
     }
 
     public void init(SurfaceView view) {
         mContext = view.getContext();
         mSurfaceView = view;
+
+        view.setFocusable(true);
+        view.setFocusableInTouchMode(true);
+        view.setKeepScreenOn(true);
+
+        view.setOnTouchListener(new TouchEventWrapper(mContext, mEventManager));
+
         if (mRenderManager == null) {
             mRenderManager = new RenderManager();
         }
@@ -44,6 +59,12 @@ public class Presenter {
 //        render = new RandomRender(null);
 //        mRenderManager.addRender(render);
 
+        mAppsRender = new AppsRender(mRenderManager);
+        mRenderManager.addRender(mAppsRender);
+        mEventManager.registerEventHandler(EventType.TYPE_CLICK, mAppsRender);
+        mEventManager.registerEventHandler(EventType.TYPE_FLING, mAppsRender);
+        mEventManager.registerEventHandler(EventType.TYPE_FLING_END, mAppsRender);
+
         int mins = DisplayUtil.dp2px(mContext, 10);
         int maxs = DisplayUtil.dp2px(mContext, 25);
 
@@ -53,7 +74,7 @@ public class Presenter {
                     (int) (RandomUtil.getRandom().nextFloat() * (maxs - mins) + mins));
             ((BubbleRobot) robot).loadDrawable(mContext.getResources());
 
-            render = new BubbleRender();
+            render = new BubbleRender(mRenderManager);
             render.setRobot(robot);
             mRenderManager.addRender(render);
         }
@@ -93,4 +114,5 @@ public class Presenter {
             mRenderManager.destroyRender();
         }
     }
+
 }
