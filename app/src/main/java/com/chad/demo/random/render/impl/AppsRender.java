@@ -116,6 +116,9 @@ public class AppsRender extends BaseRender implements
     }
 
     private void calculateSize() {
+
+        mPaddingBottom = Math.max(mHeight * 0.2f, DisplayUtil.dp2px(mContext, 100));
+
         mColumnPadding = (mWidth - mPaddingLeft - mPaddingRight
                 - mColumnCount * mIconWidth) / (float)(mColumnCount - 1);
 
@@ -234,7 +237,7 @@ public class AppsRender extends BaseRender implements
         float oy = ah % ih;
 
         if (ox > mIconWidth || oy > (ih - mRowPadding)) {
-            Logger.d(Constant.MODULE, TAG, "clock on padding area");
+            Logger.d(Constant.MODULE, TAG, "click on padding area");
             return false;
         }
 
@@ -248,7 +251,7 @@ public class AppsRender extends BaseRender implements
 
         startApp(app);
 
-        return false;
+        return true;
     }
 
     private boolean handleFling(float x, float y, float dx, float dy) {
