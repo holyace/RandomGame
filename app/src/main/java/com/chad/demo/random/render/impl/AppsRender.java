@@ -151,25 +151,30 @@ public class AppsRender extends BaseRender implements
 
         int size = mApps.size();
 
-        int start = mPageNo * mColumnCount * mRowCount;
-        int end = (mPageNo + 1) * mColumnCount * mRowCount;
+        int page = mPageCount;
 
         canvas.translate(-mOffsetX, -mOffsetY);
 
-        for (int i = start; i < Math.min(end, size); i++) {
-            AppInfo app = mApps.get(i);
-            int row = (i - start) / mColumnCount;
-            int col = (i - start) % mColumnCount;
+        for (int i = 0; i < page; i++) {
 
-            renderApp(canvas, app, col, row);
+            int start = i * mColumnCount * mRowCount;
+            int end = (i + 1) * mColumnCount * mRowCount;
+
+            for (int j = start; j < Math.min(end, size); j++) {
+                AppInfo app = mApps.get(j);
+                int row = (j - start) / mColumnCount;
+                int col = (j - start) % mColumnCount;
+
+                renderApp(canvas, app, i, col, row);
+            }
         }
         
     }
 
     private void renderApp(Canvas canvas, AppInfo app,
-                           int colIndex, int rowIndex) {
+                           int page, int colIndex, int rowIndex) {
 
-        float x = mPaddingLeft + colIndex * mIconWidth +
+        float x = page * mWidth + mPaddingLeft + colIndex * mIconWidth +
                 colIndex * mColumnPadding;
         float y = mPaddingTop +
                 rowIndex * (mIconWidth + mItemPadding + mTitleHeight) +
@@ -256,13 +261,18 @@ public class AppsRender extends BaseRender implements
 
     private boolean handleFling(float x, float y, float dx, float dy) {
         mOffsetX += dx;
-        mOffsetY += dy;
+//        mOffsetY += dy;
         return true;
     }
 
     private boolean handleFlingEnd(float x, float y, float vx, float vy) {
-        mOffsetX = mPageNo * mWidth;
-        mOffsetY = mPageNo * mHeight;
+        if (mOffsetX >= mWidth / 3f) {
+            mPageNo++;
+            if (mPageNo >= mPageCount) {
+                mPageNo = 0;
+            }
+            mOffsetX = mPageNo * mWidth;
+        }
         return false;
     }
 
@@ -294,18 +304,4 @@ public class AppsRender extends BaseRender implements
         }
     }
 
-    public boolean onTouch(MotionEvent event) {
-        if (event.getAction() == MotionEvent.ACTION_DOWN) {
-            int page = mPageNo;
-            page++;
-            if (page >= mPageCount) {
-                page = 0;
-            }
-
-            Logger.d(Constant.MODULE, TAG, "current page: %d", page);
-
-            mPageNo = page;
-        }
-        return true;
-    }
 }
