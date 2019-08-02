@@ -4,11 +4,11 @@ import android.content.Context;
 import android.view.SurfaceView;
 
 import com.chad.demo.random.R;
+import com.chad.demo.random.constant.EventType;
 import com.chad.demo.random.event.EventManager;
-import com.chad.demo.random.event.TouchEventWrapper;
+import com.chad.demo.random.event.IEventHandler;
 import com.chad.demo.random.mgr.RenderManager;
 import com.chad.demo.random.model.BubbleRobot;
-import com.chad.demo.random.constant.EventType;
 import com.chad.demo.random.model.Robot;
 import com.chad.demo.random.render.IRender;
 import com.chad.demo.random.render.impl.AppsRender;
@@ -27,12 +27,9 @@ public class Presenter {
     private RenderManager mRenderManager;
     private Context mContext;
 
-    private AppsRender mAppsRender;
-
     private EventManager mEventManager;
 
     public Presenter() {
-        mEventManager = EventManager.getInstance();
     }
 
     public void init(SurfaceView view) {
@@ -43,7 +40,7 @@ public class Presenter {
         view.setFocusableInTouchMode(true);
         view.setKeepScreenOn(true);
 
-        view.setOnTouchListener(new TouchEventWrapper(mContext, mEventManager));
+        mEventManager = new EventManager(view);
 
         if (mRenderManager == null) {
             mRenderManager = new RenderManager();
@@ -59,11 +56,11 @@ public class Presenter {
 //        render = new RandomRender(null);
 //        mRenderManager.addRender(render);
 
-        mAppsRender = new AppsRender(mRenderManager);
-        mRenderManager.addRender(mAppsRender);
-        mEventManager.registerEventHandler(EventType.TYPE_CLICK, mAppsRender);
-        mEventManager.registerEventHandler(EventType.TYPE_FLING, mAppsRender);
-        mEventManager.registerEventHandler(EventType.TYPE_FLING_END, mAppsRender);
+        render = new AppsRender(mRenderManager);
+        mRenderManager.addRender(render);
+        mEventManager.registerEventHandler(EventType.TYPE_CLICK, (IEventHandler) render);
+        mEventManager.registerEventHandler(EventType.TYPE_FLING, (IEventHandler) render);
+        mEventManager.registerEventHandler(EventType.TYPE_FLING_END, (IEventHandler) render);
 
         int mins = DisplayUtil.dp2px(mContext, 10);
         int maxs = DisplayUtil.dp2px(mContext, 25);

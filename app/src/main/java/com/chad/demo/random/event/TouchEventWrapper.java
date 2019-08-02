@@ -14,8 +14,8 @@ public class TouchEventWrapper implements View.OnTouchListener {
 
     private GestureDetector mGestureDetector;
 
-    public TouchEventWrapper(Context context, EventManager manager) {
-        mGestureDetector = new GestureDetector(context, manager);
+    public TouchEventWrapper(Context context, GestureDetector.OnGestureListener listener) {
+        mGestureDetector = new GestureDetector(context, listener);
     }
 
     @Override
