@@ -33,11 +33,11 @@ public class MovePolicy {
         return model.getPosition().x >= w && model.getPosition().x <= 0;
     }
 
-    private boolean isBottomLeftCorner(int w, int h, PositionModel model) {
+    private boolean isLeftBottomCorner(int w, int h, PositionModel model) {
         return model.getPosition().x <= 0 && model.getPosition().y >= h;
     }
 
-    private boolean isBottomRightCorner(int w, int h, PositionModel model) {
+    private boolean isRightBottomCorner(int w, int h, PositionModel model) {
         return model.getPosition().x >= w && model.getPosition().y >= h;
     }
 
@@ -86,7 +86,7 @@ public class MovePolicy {
                 mm.goDown(null);
             }
         }
-        else if (isBottomLeftCorner(w, h, model)) {
+        else if (isLeftBottomCorner(w, h, model)) {
             int index = ProbabilityUtil.random(mConfig.getCornerRate());
             if (index == 0) {
                 mm.setTurn(Turn.FORCE_TURN);
@@ -97,7 +97,7 @@ public class MovePolicy {
                 mm.goRight(null);
             }
         }
-        else if (isBottomRightCorner(w, h, model)) {
+        else if (isRightBottomCorner(w, h, model)) {
             int index = ProbabilityUtil.random(mConfig.getCornerRate());
             if (index == 0) {
                 mm.setTurn(Turn.FORCE_TURN);
