@@ -1,12 +1,11 @@
 package com.chad.demo.random.render.impl;
 
-import android.content.ComponentName;
 import android.content.Intent;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.os.Handler;
 import android.text.TextPaint;
-import android.view.MotionEvent;
 
 import com.chad.demo.random.constant.Constant;
 import com.chad.demo.random.event.IEventHandler;
@@ -21,7 +20,6 @@ import com.chad.demo.random.util.RenderUtil;
 import com.chad.demo.random.util.ScaleType;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * No comment for you. yeah, come on, bite me~
@@ -67,8 +65,16 @@ public class AppsRender extends BaseRender implements
     private float mOffsetX;
     private float mOffsetY;
 
+    private Handler mHandler;
+
+    private ScrollEndTask mScrollEndTask;
+
+    private boolean mInAnim = false;
+
     public AppsRender(RenderManager manager) {
         super(manager);
+        mHandler = new Handler();
+        mScrollEndTask = new ScrollEndTask();
     }
 
     @Override
@@ -153,7 +159,7 @@ public class AppsRender extends BaseRender implements
 
         int page = mPageCount;
 
-        canvas.translate(-mOffsetX, -mOffsetY);
+        canvas.translate(-mPageNo * mWidth - mOffsetX, -mOffsetY);
 
         for (int i = 0; i < page; i++) {
 
@@ -215,11 +221,11 @@ public class AppsRender extends BaseRender implements
             case TYPE_CLICK:
                 return handleClick(x, y);
 
-            case TYPE_FLING:
-                return handleFling(x, y, dx, dy);
+            case TYPE_SCROLL:
+                return handleScroll(x, y, dx, dy);
 
-            case TYPE_FLING_END:
-                return handleFlingEnd(x, y, vx, vy);
+            case TYPE_FLING:
+                return handleScrollEnd(x, y, vx, vy);
         }
         return false;
     }
@@ -259,21 +265,51 @@ public class AppsRender extends BaseRender implements
         return true;
     }
 
-    private boolean handleFling(float x, float y, float dx, float dy) {
+    private boolean handleScroll(float x, float y, float dx, float dy) {
+        mHandler.removeCallbacks(mScrollEndTask);
         mOffsetX += dx;
 //        mOffsetY += dy;
+
+        mScrollEndTask.setVelocity(0, 0);
+
+        mHandler.postDelayed(mScrollEndTask, 100);
         return true;
     }
 
-    private boolean handleFlingEnd(float x, float y, float vx, float vy) {
-        if (mOffsetX >= mWidth / 3f) {
-            mPageNo++;
-            if (mPageNo >= mPageCount) {
+    private boolean handleScrollEnd(float x, float y, float vx, float vy) {
+        mHandler.removeCallbacks(mScrollEndTask);
+
+        mScrollEndTask.setVelocity(vx, vy);
+
+        doScrollEnd(vx, vy);
+        return false;
+    }
+
+    private void doScrollEnd(float vx, float vy) {
+
+        Logger.d(Constant.MODULE, TAG, "doScrollEnd offset:%.2f, vx:%.2f, vy:%.2f", mOffsetX, vx, vy);
+
+        int flag = 1;
+
+        float offset = mOffsetX;
+
+        if (offset < 0) {
+            flag = -1;
+        }
+
+        offset = Math.abs(offset);
+
+        if (Math.abs(vx) > 0 || offset >= mWidth / 4f) {
+            mPageNo = mPageNo + flag;
+            if (mPageNo < 0) {
                 mPageNo = 0;
             }
-            mOffsetX = mPageNo * mWidth;
+            else if (mPageNo >= mPageCount) {
+                mPageNo = mPageCount - 1;
+            }
         }
-        return false;
+        mOffsetX = 0;
+//        mOffsetX = mPageNo * mWidth;
     }
 
     private AppInfo findApp(int col, int row) {
@@ -304,4 +340,47 @@ public class AppsRender extends BaseRender implements
         }
     }
 
+    private void smothScroll(float dx, long time) {
+        if (mInAnim) {
+
+        }
+    }
+
+    private void stopScroll() {
+        if (!mInAnim) {
+            return;
+        }
+    }
+
+    private class SmothScrollTask {
+
+        private volatile boolean mInAnim;
+
+
+        public void stop() {
+
+        }
+
+        public void start(float dx, float time) {
+
+        }
+    }
+
+    private class ScrollEndTask implements Runnable {
+
+        private float mVelocityX;
+        private float mVelocityY;
+
+        public void setVelocity(float velocityX, float velocityY) {
+            mVelocityX = velocityX;
+            mVelocityY = velocityY;
+        }
+
+        @Override
+        public void run() {
+            doScrollEnd(mVelocityX, mVelocityY);
+            mVelocityX = 0;
+            mVelocityY = 0;
+        }
+    }
 }

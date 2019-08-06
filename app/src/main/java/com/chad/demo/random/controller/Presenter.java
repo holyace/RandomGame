@@ -59,8 +59,8 @@ public class Presenter {
         render = new AppsRender(mRenderManager);
         mRenderManager.addRender(render);
         mEventManager.registerEventHandler(EventType.TYPE_CLICK, (IEventHandler) render);
+        mEventManager.registerEventHandler(EventType.TYPE_SCROLL, (IEventHandler) render);
         mEventManager.registerEventHandler(EventType.TYPE_FLING, (IEventHandler) render);
-        mEventManager.registerEventHandler(EventType.TYPE_FLING_END, (IEventHandler) render);
 
         int mins = DisplayUtil.dp2px(mContext, 10);
         int maxs = DisplayUtil.dp2px(mContext, 25);

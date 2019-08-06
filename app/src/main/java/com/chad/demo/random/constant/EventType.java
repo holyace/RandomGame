@@ -9,8 +9,8 @@ public enum EventType {
 
     TYPE_CLICK,
     TYPE_LONG_CLICK,
+    TYPE_SCROLL,
     TYPE_FLING,
-    TYPE_FLING_END,
     TYPE_ZOOM_IN,
     TYPE_ZOOM_OUT
 

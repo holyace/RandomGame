@@ -45,7 +45,7 @@ public class EventManager {
         @Override
         public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
             Logger.d(Constant.MODULE, TAG, "onScroll x:%f, y:%f", distanceX, distanceY);
-            return dispatchEvent(EventType.TYPE_FLING, e2.getX(), e2.getY(), distanceX, distanceY, 0, 0);
+            return dispatchEvent(EventType.TYPE_SCROLL, e2.getX(), e2.getY(), distanceX, distanceY, 0, 0);
         }
 
         @Override
@@ -56,7 +56,7 @@ public class EventManager {
         @Override
         public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
             Logger.d(Constant.MODULE, TAG, "onFling x:%f, y:%f", velocityX, velocityY);
-            return dispatchEvent(EventType.TYPE_FLING_END, e2.getX(), e2.getY(), 0, 0, velocityX, velocityY);
+            return dispatchEvent(EventType.TYPE_FLING, e2.getX(), e2.getY(), 0, 0, velocityX, velocityY);
         }
     };
 
