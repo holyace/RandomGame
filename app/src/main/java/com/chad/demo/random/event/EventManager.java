@@ -61,7 +61,49 @@ public class EventManager {
     };
 
     public EventManager(View view) {
-        view.setOnTouchListener(new TouchEventWrapper(view.getContext(), mGestureListener));
+//        view.setOnTouchListener(new TouchEventWrapper(view.getContext(), mGestureListener));
+        view.setOnTouchListener(new com.chad.demo.random.event.GestureDetector(view.getContext(), new com.chad.demo.random.event.GestureDetector.OnGestureListener() {
+
+            @Override
+            public boolean onDown(MotionEvent event) {
+                Logger.e(Constant.MODULE, TAG, "onDown");
+                return false;
+            }
+
+            @Override
+            public boolean onLongPress(MotionEvent event) {
+                Logger.e(Constant.MODULE, TAG, "onLongPress");
+                return false;
+            }
+
+            @Override
+            public void onClick(MotionEvent event) {
+                Logger.e(Constant.MODULE, TAG, "onClick");
+            }
+
+            @Override
+            public void onDoubleClick(MotionEvent event) {
+                Logger.e(Constant.MODULE, TAG, "onDoubleClick");
+            }
+
+            @Override
+            public boolean onScroll(MotionEvent event, float distanceX, float distanceY) {
+                Logger.e(Constant.MODULE, TAG, "onScroll");
+                return false;
+            }
+
+            @Override
+            public boolean onFling(MotionEvent event, float velocityX, float velocityY) {
+                Logger.e(Constant.MODULE, TAG, "onFling");
+                return false;
+            }
+
+            @Override
+            public boolean onUp(MotionEvent event) {
+                Logger.e(Constant.MODULE, TAG, "onUp");
+                return false;
+            }
+        }));
     }
 
     private boolean dispatchEvent(EventType type, float x, float y, float dx, float dy, float vx, float vy) {

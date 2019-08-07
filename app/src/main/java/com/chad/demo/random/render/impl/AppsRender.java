@@ -8,9 +8,9 @@ import android.os.Handler;
 import android.text.TextPaint;
 
 import com.chad.demo.random.constant.Constant;
+import com.chad.demo.random.constant.EventType;
 import com.chad.demo.random.event.IEventHandler;
 import com.chad.demo.random.mgr.RenderManager;
-import com.chad.demo.random.constant.EventType;
 import com.chad.demo.random.model.app.AppInfo;
 import com.chad.demo.random.model.app.AppLoader;
 import com.chad.demo.random.render.BaseRender;
@@ -20,6 +20,8 @@ import com.chad.demo.random.util.RenderUtil;
 import com.chad.demo.random.util.ScaleType;
 
 import java.util.List;
+import java.util.concurrent.locks.ReadWriteLock;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 /**
  * No comment for you. yeah, come on, bite me~
@@ -36,7 +38,9 @@ public class AppsRender extends BaseRender implements
     private volatile boolean mLoaded;
     
     private List<AppInfo> mApps;
-    
+
+    private ReadWriteLock mLock;
+
     private int mColumnCount = 5;
     private int mRowCount = -1;
 
@@ -54,10 +58,7 @@ public class AppsRender extends BaseRender implements
     private float mTitleHeight;
     private float mItemPadding;
 
-    private Paint mIconPaint;
     private Paint mTextPaint;
-
-    private Rect mTextRect;
 
     private int mPageCount;
     private volatile int mPageNo;
@@ -75,6 +76,18 @@ public class AppsRender extends BaseRender implements
         super(manager);
         mHandler = new Handler();
         mScrollEndTask = new ScrollEndTask();
+        mLock = new ReentrantReadWriteLock();
+    }
+
+    public void setTitleFontSize(float sp) {
+        if (sp <= 0) {
+            return;
+        }
+        mTitleFontSize = DisplayUtil.sp2px(mContext, sp);
+    }
+
+    public void setTitleColor(int color) {
+        mTitleColor = color;
     }
 
     @Override
@@ -95,16 +108,13 @@ public class AppsRender extends BaseRender implements
 
         mTitleColor = 0xff333333;
 
-        mIconPaint = new Paint();
-        mIconPaint.setAntiAlias(true);
-
         mTextPaint = new TextPaint();
         mTextPaint.setTextSize(mTitleFontSize);
         mTextPaint.setColor(mTitleColor);
         mTextPaint.setAntiAlias(true);
 //        mTextPaint.setTextAlign(Paint.Align.CENTER);
 
-        mTextRect = new Rect();
+        Rect mTextRect = new Rect();
         mTextPaint.getTextBounds("abc", 0, 3, mTextRect);
         mTitleHeight = mTextRect.height();
 
@@ -155,26 +165,34 @@ public class AppsRender extends BaseRender implements
             return;
         }
 
-        int size = mApps.size();
+        mLock.readLock().lock();
 
-        int page = mPageCount;
+        try {
+            int size = mApps.size();
 
-        canvas.translate(-mPageNo * mWidth - mOffsetX, -mOffsetY);
+            int page = mPageCount;
 
-        for (int i = 0; i < page; i++) {
+            canvas.translate(-mPageNo * mWidth - mOffsetX, -mOffsetY);
 
-            int start = i * mColumnCount * mRowCount;
-            int end = (i + 1) * mColumnCount * mRowCount;
+            for (int i = 0; i < page; i++) {
 
-            for (int j = start; j < Math.min(end, size); j++) {
-                AppInfo app = mApps.get(j);
-                int row = (j - start) / mColumnCount;
-                int col = (j - start) % mColumnCount;
+                int start = i * mColumnCount * mRowCount;
+                int end = (i + 1) * mColumnCount * mRowCount;
 
-                renderApp(canvas, app, i, col, row);
+                for (int j = start; j < Math.min(end, size); j++) {
+                    AppInfo app = mApps.get(j);
+                    int row = (j - start) / mColumnCount;
+                    int col = (j - start) % mColumnCount;
+
+                    renderApp(canvas, app, i, col, row);
+                }
             }
+        } catch (Exception e) {
+            Logger.e(Constant.MODULE, TAG, "render exception:%s", e.getMessage());
+        } finally {
+            mLock.readLock().unlock();
         }
-        
+
     }
 
     private void renderApp(Canvas canvas, AppInfo app,
@@ -202,17 +220,26 @@ public class AppsRender extends BaseRender implements
     @Override
     public void onLoadFinish(List<AppInfo> apps) {
 
-        Logger.d(Constant.MODULE, TAG, "load app finish: %d", apps.size());
+        Logger.d(Constant.MODULE, TAG, "load app finish: %d", apps == null ? 0 : apps.size());
 
-        if (apps != null && apps.size() > 0) {
-            int size = apps.size();
-            mPageCount = (int) Math.ceil(size / (double) (mColumnCount * mRowCount));
-            mPageNo = 0;
-            Logger.d(Constant.MODULE, TAG, "page count: %d", mPageCount);
+        mLock.writeLock().lock();
+
+        try {
+
+            if (apps != null && apps.size() > 0) {
+                int size = apps.size();
+                mPageCount = (int) Math.ceil(size / (double) (mColumnCount * mRowCount));
+                mPageNo = 0;
+                Logger.d(Constant.MODULE, TAG, "page count: %d", mPageCount);
+            }
+
+            mApps = apps;
+            mLoaded = true;
+        } catch (Exception e) {
+            Logger.e(Constant.MODULE, TAG, "onLoadFinish exception:%s", e.getMessage());
+        } finally {
+            mLock.writeLock().unlock();
         }
-
-        mApps = apps;
-        mLoaded = true;
     }
 
     @Override
@@ -320,12 +347,22 @@ public class AppsRender extends BaseRender implements
         int offset = mPageNo * mColumnCount * mRowCount;
         int index = offset + row * mColumnCount + col;
 
-        synchronized (mApps) {
+        mLock.readLock().lock();
+
+        AppInfo app = null;
+
+        try {
             if (index < 0 || index > mApps.size()) {
                 return null;
             }
-            return mApps.get(index);
+            app = mApps.get(index);
+        } catch (Exception e) {
+            Logger.e(Constant.MODULE, TAG, "findApp exception:%s", e.getMessage());
+        } finally {
+            mLock.readLock().unlock();
         }
+
+        return app;
     }
 
     private void startApp(AppInfo app) {
