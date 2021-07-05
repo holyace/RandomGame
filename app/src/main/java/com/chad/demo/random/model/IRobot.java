@@ -2,6 +2,7 @@ package com.chad.demo.random.model;
 
 import android.graphics.Bitmap;
 import android.graphics.PointF;
+import android.graphics.Rect;
 import android.graphics.RectF;
 
 /**
@@ -15,7 +16,7 @@ public interface IRobot {
 
     void setCurrentPosition(PointF point);
 
-    RectF getSize();
+    Rect getSize();
 
     void setSize(RectF rect);
 

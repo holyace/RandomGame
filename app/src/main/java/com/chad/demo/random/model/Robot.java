@@ -2,6 +2,7 @@ package com.chad.demo.random.model;
 
 import android.graphics.Bitmap;
 import android.graphics.PointF;
+import android.graphics.Rect;
 import android.graphics.RectF;
 
 /**
@@ -22,7 +23,7 @@ public class Robot implements IRobot {
     }
 
     @Override
-    public RectF getSize() {
+    public Rect getSize() {
         return null;
     }
 

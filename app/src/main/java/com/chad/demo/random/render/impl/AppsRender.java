@@ -99,7 +99,7 @@ public class AppsRender extends BaseRender implements
         mItemPadding = DisplayUtil.dp2px(mContext, 5);
 
         mPaddingLeft = mPaddingRight = DisplayUtil.dp2px(mContext, 15);
-        mPaddingTop = DisplayUtil.dp2px(mContext, 15);
+        mPaddingTop = DisplayUtil.dp2px(mContext, 25);
         mPaddingBottom = DisplayUtil.dp2px(mContext, 100);
 
         mRowPadding = DisplayUtil.dp2px(mContext, 15);

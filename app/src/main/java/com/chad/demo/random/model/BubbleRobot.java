@@ -3,6 +3,7 @@ package com.chad.demo.random.model;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Rect;
 import android.graphics.RectF;
 
 import com.chad.demo.random.R;
@@ -17,7 +18,7 @@ import com.chad.demo.random.util.RandomUtil;
  */
 public class BubbleRobot extends Robot {
 
-    private RectF mSize;
+    private Rect mSize;
     private RectF mPosition;
     private Bitmap mTexture;
 
@@ -31,11 +32,11 @@ public class BubbleRobot extends Robot {
     }
 
     public BubbleRobot(int id, int size) {
-        mSize = new RectF(0, 0, size, size);
+        mSize = new Rect(0, 0, size, size);
         mResId = id;
         mPosition = new RectF();
 
-        int mins = 50, maxs = 70;
+        int mins = 50, maxs = 90;
         mSpped = (int) (RandomUtil.getRandom().nextFloat() * (maxs - mins) + mins);
     }
 
@@ -51,7 +52,7 @@ public class BubbleRobot extends Robot {
     }
 
     @Override
-    public RectF getSize() {
+    public Rect getSize() {
         return mSize;
     }
 
