@@ -1,0 +1,21 @@
+ext.deps = [:]
+
+def deps = [:]
+
+def versions = [:]
+versions.kotlin = "1.3.50"
+versions.androidx = "1.0.0"
+
+def kotlin = [:]
+kotlin.plugin = "org.jetbrains.kotlin:kotlin-gradle-plugin:$versions.kotlin"
+kotlin.stdlib = "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$versions.kotlin"
+
+deps.kotlin = kotlin
+
+def androidx = [:]
+androidx.compat = "androidx.appcompat:appcompat:$versions.androidx"
+androidx.annotations = "androidx.annotation:annotation:$versions.androidx"
+
+deps.androidx = androidx
+
+ext.deps = deps
