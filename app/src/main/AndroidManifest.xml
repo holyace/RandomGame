@@ -3,6 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.chad.demo.random">
 
+    <uses-feature android:glEsVersion="0x00030000" android:required="true"/>
+
     <application
         android:name=".common.BaseApplication"
         android:allowBackup="true"
@@ -29,6 +31,17 @@
             android:label="123"
             >
 
+<!--            <intent-filter>-->
+
+<!--                <action android:name="android.intent.action.MAIN"/>-->
+<!--                <category android:name="android.intent.category.LAUNCHER"/>-->
+<!--            </intent-filter>-->
+        </activity>
+
+        <activity android:name=".gl.GLPhotoActivity"
+            android:theme="@style/ImmersiveActivity"
+            android:label="234"
+            >
             <intent-filter>
 
                 <action android:name="android.intent.action.MAIN"/>
