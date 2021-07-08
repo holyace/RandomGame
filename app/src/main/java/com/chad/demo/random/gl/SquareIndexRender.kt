@@ -8,6 +8,9 @@ import java.nio.ByteOrder
 import java.nio.FloatBuffer
 import java.nio.ShortBuffer
 
+/**
+ * 索引法
+ */
 class SquareIndexRender(context: Context,
                         vertexShader: String,
                         fragmentShader: String)

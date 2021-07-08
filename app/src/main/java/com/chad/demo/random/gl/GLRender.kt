@@ -35,7 +35,11 @@ class GLRender: GLSurfaceView.Renderer {
 //                "shader_vertex.vs.glsl",
 //                "shader_vertex.fs.glsl")
 
-        mRenderable = SquareIndexRender(mAppCtx!!,
+//        mRenderable = SquareIndexRender(mAppCtx!!,
+//                "shader_vertex.vs.glsl",
+//                "shader_vertex.fs.glsl")
+
+        mRenderable = SquareVertexVAORender(mAppCtx!!,
                 "shader_vertex.vs.glsl",
                 "shader_vertex.fs.glsl")
     }
