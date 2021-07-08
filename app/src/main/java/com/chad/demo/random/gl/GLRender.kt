@@ -59,11 +59,12 @@ class GLRender: GLSurfaceView.Renderer {
     }
 
     private fun initOpenGL() {
-//        GLES30.glEnable(GLES30.GL_DEPTH_TEST)
+        GLES30.glEnable(GLES30.GL_DEPTH_TEST)
     }
 
     private fun clearCanvas() {
-        GLES30.glClearColor(1f, 0f, 0f, 0.5f)
+        GLES30.glClear(GLES30.GL_COLOR_BUFFER_BIT or GLES30.GL_DEPTH_BUFFER_BIT)
+//        GLES30.glClearColor(0f, 0f, 0f, 1.0f)
 //        GLES30.glClear(GLES30.GL_COLOR_BUFFER_BIT)
 //        GLES30.glClear(GLES30.GL_DEPTH_BITS)
     }
