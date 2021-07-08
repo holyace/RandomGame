@@ -31,7 +31,11 @@ class GLRender: GLSurfaceView.Renderer {
 
         mAppCtx = glSurfaceView.context.applicationContext
 
-        mRenderable = SquareVertexRender(mAppCtx!!,
+//        mRenderable = SquareVertexRender(mAppCtx!!,
+//                "shader_vertex.vs.glsl",
+//                "shader_vertex.fs.glsl")
+
+        mRenderable = SquareIndexRender(mAppCtx!!,
                 "shader_vertex.vs.glsl",
                 "shader_vertex.fs.glsl")
     }
