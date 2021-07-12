@@ -25,7 +25,7 @@ open class Renderable(protected val context: Context,
 
     open fun render() {}
 
-    open fun setRotation(angle: Float) {}
+    open fun setRotation(angle: Float, angleX: Float, angleY: Float, angleZ: Float) {}
 
     open fun onDestroy() {
         GLES30.glDeleteShader(mVertexShaderId)

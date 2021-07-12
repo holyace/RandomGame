@@ -3,7 +3,10 @@ package com.chad.demo.random.gl
 import android.content.Context
 import android.opengl.GLES30
 import android.opengl.Matrix
+import com.chad.demo.random.constant.Constant
 import com.chad.demo.random.gl.GLRender.Companion.MATRIX_SIZE
+import com.chad.demo.random.gl.GLRender.Companion.TAG
+import com.chad.demo.random.util.Logger
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
 import java.nio.FloatBuffer
@@ -17,19 +20,24 @@ class SquareMatrixRender(context: Context)
     private val mMatrix = FloatArray(MATRIX_SIZE)
     private val mViewMatrix = FloatArray(MATRIX_SIZE)
     private val mProjectionMatrix = FloatArray(MATRIX_SIZE)
+    private val mActionMatrix = FloatArray(MATRIX_SIZE)
 
     private lateinit var mVertexBuffer: FloatBuffer
+
+    private var mRotationX = 0f
+    private var mRotationY = 0f
+    private var mRotationZ = 0f
 
     private val x = 0.5f
     private val y = 0.5f
     private val z = 0.5f
 
-    private val mV0 = floatArrayOf(x, y, 0f)
-    private val mV1 = floatArrayOf(-x, y, 0f)
-    private val mV2 = floatArrayOf(-x, -y, 0f)
-    private val mV3 = floatArrayOf(x, -y, 0f)
+    private val mV0 = floatArrayOf(x, y, z)
+    private val mV1 = floatArrayOf(-x, y, z)
+    private val mV2 = floatArrayOf(-x, -y, z)
+    private val mV3 = floatArrayOf(x, -y, z)
 
-    private val mV4 = floatArrayOf(x, -y, -x)
+    private val mV4 = floatArrayOf(x, -y, -z)
     private val mV5 = floatArrayOf(x, y, -z)
     private val mV6 = floatArrayOf(-x, y, -z)
     private val mV7 = floatArrayOf(-x, -y, -z)
@@ -54,6 +62,8 @@ class SquareMatrixRender(context: Context)
 
     private val mVBOSize = 1
     private val mVBOIds = IntArray(mVBOSize)
+
+    private var mAngle = 0f
 
     override fun onGLESReady() {
         super.onGLESReady()
@@ -83,7 +93,7 @@ class SquareMatrixRender(context: Context)
         GLES30.glEnableVertexAttribArray(0)
 
         Matrix.setLookAtM(mViewMatrix, 0,
-                0f, 0f, 3f,
+                0f, 0f, 5f,
                 0f, 0f, 0f,
                 0f, 1f, 0f)
 
@@ -94,13 +104,24 @@ class SquareMatrixRender(context: Context)
         super.onSurfaceChange(width, height)
 
         val ratio = width.toFloat() / height.toFloat()
-        Matrix.perspectiveM(mProjectionMatrix, 0, 75f, ratio, 3f, 7f)
+        Matrix.perspectiveM(mProjectionMatrix, 0, 75f, ratio, 3f, -7f)
     }
 
     override fun render() {
         super.render()
 
+        Logger.i(Constant.MODULE, TAG, "render run")
+
+        Matrix.rotateM(mActionMatrix, 0, mAngle, 0f, 1f, 0f)
+
         Matrix.multiplyMM(mMatrix, 0, mProjectionMatrix, 0, mViewMatrix, 0)
+
+        if (mRotationX > 0) {
+            Matrix.rotateM(mMatrix, 0, mAngle, 0f, 1f, 0f)
+        }
+        else {
+            Matrix.rotateM(mMatrix, 0, mAngle, 1f, 0f, 0f)
+        }
 
         GLES30.glUniformMatrix4fv(mMVPMatrixHandle, 1, false, mMatrix, 0)
 
@@ -112,5 +133,11 @@ class SquareMatrixRender(context: Context)
         GLES30.glBindVertexArray(0)
     }
 
-
+    override fun setRotation(angle: Float, angleX: Float, angleY: Float, angleZ: Float) {
+        super.setRotation(angle, angleX, angleY, angleZ)
+        mAngle = angle
+        mRotationX = angleX
+        mRotationY = angleY
+        mRotationZ = angleZ
+    }
 }

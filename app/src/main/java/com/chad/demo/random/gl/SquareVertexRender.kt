@@ -71,8 +71,4 @@ class SquareVertexRender(context: Context)
         GLES30.glLineWidth(10f)
         GLES30.glDrawArrays(GLES30.GL_LINE_STRIP, 0, 12 * 3)
     }
-
-    override fun setRotation(angle: Float) {
-        super.setRotation(angle)
-    }
 }

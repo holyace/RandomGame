@@ -88,8 +88,4 @@ class SquareVertexVAORender(context: Context)
 
         GLES30.glBindVertexArray(0)
     }
-
-    override fun setRotation(angle: Float) {
-        super.setRotation(angle)
-    }
 }
