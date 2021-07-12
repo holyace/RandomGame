@@ -11,10 +11,10 @@ import java.nio.ShortBuffer
 /**
  * 索引法
  */
-class SquareIndexRender(context: Context,
-                        vertexShader: String,
-                        fragmentShader: String)
-    : Renderable(context, vertexShader, fragmentShader) {
+class SquareIndexRender(context: Context)
+    : Renderable(context,
+        "shader_vertex.vs.glsl",
+        "shader_vertex.fs.glsl") {
 
     private lateinit var mVertexBuffer: FloatBuffer
     private lateinit var mIndexBuffer: ShortBuffer

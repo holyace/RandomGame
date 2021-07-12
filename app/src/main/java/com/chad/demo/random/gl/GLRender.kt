@@ -13,6 +13,7 @@ class GLRender: GLSurfaceView.Renderer {
         const val CORDS_PER_VERTEX = 3
         const val CORDS_PER_VERTEX_COLOR = 2 * CORDS_PER_VERTEX
         const val FLOAT_SIZE = 4
+        const val MATRIX_SIZE = 16
     }
 
     private var mWidth = 0
@@ -31,17 +32,13 @@ class GLRender: GLSurfaceView.Renderer {
 
         mAppCtx = glSurfaceView.context.applicationContext
 
-//        mRenderable = SquareVertexRender(mAppCtx!!,
-//                "shader_vertex.vs.glsl",
-//                "shader_vertex.fs.glsl")
+//        mRenderable = SquareVertexRender(mAppCtx!!)
 
-//        mRenderable = SquareIndexRender(mAppCtx!!,
-//                "shader_vertex.vs.glsl",
-//                "shader_vertex.fs.glsl")
+//        mRenderable = SquareIndexRender(mAppCtx!!)
 
-        mRenderable = SquareVertexVAORender(mAppCtx!!,
-                "shader_vertex.vs.glsl",
-                "shader_vertex.fs.glsl")
+//        mRenderable = SquareVertexVAORender(mAppCtx!!)
+
+        mRenderable = SquareMatrixRender(mAppCtx!!)
     }
 
     override fun onSurfaceCreated(gl: GL10?, config: EGLConfig?) {
@@ -54,6 +51,7 @@ class GLRender: GLSurfaceView.Renderer {
         mWidth = width
         mHeight = height
         GLES30.glViewport(0, 0, width, height)
+        mRenderable?.onSurfaceChange(width, height)
     }
 
     override fun onDrawFrame(gl: GL10?) {

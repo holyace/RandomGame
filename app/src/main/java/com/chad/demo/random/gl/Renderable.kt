@@ -21,6 +21,8 @@ open class Renderable(protected val context: Context,
         GLES30.glUseProgram(mProgramId)
     }
 
+    open fun onSurfaceChange(width: Int, height: Int) {}
+
     open fun render() {}
 
     open fun setRotation(angle: Float) {}

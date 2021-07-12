@@ -9,10 +9,10 @@ import java.nio.FloatBuffer
 /**
  * 顶点法
  */
-class SquareVertexRender(context: Context,
-                         vertexShader: String,
-                         fragmentShader: String)
-    : Renderable(context, vertexShader, fragmentShader) {
+class SquareVertexRender(context: Context)
+    : Renderable(context,
+        "shader_vertex.vs.glsl",
+        "shader_vertex.fs.glsl") {
 
     private lateinit var mVertexBuffer: FloatBuffer
 
