@@ -2,7 +2,6 @@ package com.chad.demo.random.gl
 
 import android.content.Context
 import android.opengl.GLES30
-import android.opengl.Matrix
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
 import java.nio.FloatBuffer
@@ -70,9 +69,9 @@ class SquareIndexRender(context: Context)
         mIndexBuffer.put(mVertexIndex)
         mIndexBuffer.position(0)
 
-        GLES30.glVertexAttribPointer(0, GLRender.CORDS_PER_VERTEX,
+        GLES30.glVertexAttribPointer(0, GLRender.VERTEX_POINT_SIZE,
                 GLES30.GL_FLOAT, false,
-                GLRender.CORDS_PER_VERTEX * GLRender.FLOAT_SIZE, mVertexBuffer)
+                GLRender.VERTEX_POINT_SIZE * GLRender.FLOAT_SIZE, mVertexBuffer)
     }
 
     override fun render() {

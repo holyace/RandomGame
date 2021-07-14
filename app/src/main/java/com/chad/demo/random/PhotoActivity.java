@@ -286,7 +286,7 @@ public class PhotoActivity extends AppCompatActivity implements
 
     private void loadImage() {
         try {
-            mImage = FileUtil.squareBitmap(FileUtil.readAssets(this.getApplication(), "image_2.jpg"));
+            mImage = FileUtil.squareBitmap(FileUtil.readAssetsBitmap(this.getApplication(), "image_2.jpg"));
         } catch (IOException e) {
             e.printStackTrace();
             finish();

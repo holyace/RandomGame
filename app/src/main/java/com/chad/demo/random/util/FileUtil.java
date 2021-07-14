@@ -13,7 +13,7 @@ import java.io.InputStreamReader;
 
 public class FileUtil {
 
-    public static Bitmap readAssets(Context context, String name) throws IOException {
+    public static Bitmap readAssetsBitmap(Context context, String name) throws IOException {
 
         try (InputStream is = context.getAssets().open(name)) {
             return BitmapFactory.decodeStream(is);

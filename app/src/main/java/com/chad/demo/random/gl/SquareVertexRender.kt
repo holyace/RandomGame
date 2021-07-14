@@ -58,9 +58,9 @@ class SquareVertexRender(context: Context)
 //        GLES30.glEnable(GLES30.GL_CULL_FACE)
 //        GLES30.glPolygonOffset()
 
-        GLES30.glVertexAttribPointer(0, GLRender.CORDS_PER_VERTEX,
+        GLES30.glVertexAttribPointer(0, GLRender.VERTEX_POINT_SIZE,
                 GLES30.GL_FLOAT, false,
-                GLRender.CORDS_PER_VERTEX * GLRender.FLOAT_SIZE, mVertexBuffer)
+                GLRender.VERTEX_POINT_SIZE * GLRender.FLOAT_SIZE, mVertexBuffer)
 
 //        GLES30.glFrontFace(GLES30.GL_CW)
     }

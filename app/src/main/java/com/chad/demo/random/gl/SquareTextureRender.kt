@@ -2,25 +2,25 @@ package com.chad.demo.random.gl
 
 import android.content.Context
 import android.opengl.GLES30
+import android.opengl.GLUtils
 import android.opengl.Matrix
-import com.chad.demo.random.constant.Constant
-import com.chad.demo.random.gl.GLRender.Companion.MATRIX_SIZE
-import com.chad.demo.random.gl.GLRender.Companion.TAG
-import com.chad.demo.random.util.Logger
+import com.chad.demo.random.util.FileUtil
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
 import java.nio.FloatBuffer
 
-class SquareMatrixRender(context: Context)
+class SquareTextureRender(context: Context)
     : Renderable(context,
-        "shader_matrix.vs.glsl",
-        "shader_vertex.fs.glsl") {
+        "shader_texture.vs.glsl",
+        "shader_texture.fs.glsl") {
 
     private var mMVPMatrixHandle = -1
-    private val mMatrix = FloatArray(MATRIX_SIZE)
-    private val mViewMatrix = FloatArray(MATRIX_SIZE)
-    private val mProjectionMatrix = FloatArray(MATRIX_SIZE)
-    private val mModelMatrix = FloatArray(MATRIX_SIZE)
+    private var mUniformTextureHandle = -1
+
+    private val mMatrix = FloatArray(GLRender.MATRIX_SIZE)
+    private val mViewMatrix = FloatArray(GLRender.MATRIX_SIZE)
+    private val mProjectionMatrix = FloatArray(GLRender.MATRIX_SIZE)
+    private val mModelMatrix = FloatArray(GLRender.MATRIX_SIZE)
 
     private lateinit var mVertexBuffer: FloatBuffer
 
@@ -65,6 +65,8 @@ class SquareMatrixRender(context: Context)
 
     private var mAngle = 0f
 
+    private var mTextureId = -1
+
     override fun onGLESReady() {
         super.onGLESReady()
 
@@ -98,19 +100,37 @@ class SquareMatrixRender(context: Context)
                 0f, 1f, 0f)
 
         mMVPMatrixHandle = GLES30.glGetUniformLocation(mProgramId, "uMVPMatrix")
+
+        Matrix.setIdentityM(mModelMatrix, 0)
+
+        mUniformTextureHandle = GLES30.glGetUniformLocation(mProgramId, "inputImageTexture1")
+
+        val textureSize = 1
+        val textureIds = IntArray(textureSize)
+
+        GLES30.glGenTextures(textureSize, textureIds, 0)
+
+        GLES30.glBindTexture(GLES30.GL_TEXTURE_2D, textureIds[0])
+
+        GLES30.glTexParameteri(GLES30.GL_TEXTURE_2D, GLES30.GL_TEXTURE_WRAP_S, GLES30.GL_REPEAT)
+        GLES30.glTexParameteri(GLES30.GL_TEXTURE_2D, GLES30.GL_TEXTURE_WRAP_T, GLES30.GL_REPEAT)
+        GLES30.glTexParameteri(GLES30.GL_TEXTURE_2D, GLES30.GL_TEXTURE_MIN_FILTER, GLES30.GL_NEAREST)
+        GLES30.glTexParameteri(GLES30.GL_TEXTURE_2D, GLES30.GL_TEXTURE_MAG_FILTER, GLES30.GL_LINEAR)
+
+        GLUtils.texImage2D(GLES30.GL_TEXTURE_2D, 0,
+                FileUtil.readAssetsBitmap(context, "image_2.jpg"), 0)
+
+        mTextureId = textureIds[0]
     }
 
     override fun onSurfaceChange(width: Int, height: Int) {
         super.onSurfaceChange(width, height)
-
         val ratio = width.toFloat() / height.toFloat()
         Matrix.perspectiveM(mProjectionMatrix, 0, 75f, ratio, 3f, -7f)
     }
 
     override fun render() {
         super.render()
-
-        Logger.i(Constant.MODULE, TAG, "render run")
 
         Matrix.rotateM(mModelMatrix, 0, mAngle, 0f, 1f, 0f)
 
@@ -131,10 +151,14 @@ class SquareMatrixRender(context: Context)
         GLES30.glDrawArrays(GLES30.GL_LINE_STRIP, 0, 12 * 3)
 
         GLES30.glBindVertexArray(0)
+
+        GLES30.glActiveTexture(GLES30.GL_TEXTURE0)
+        GLES30.glBindTexture(GLES30.GL_TEXTURE_2D, mTextureId)
     }
 
     override fun setRotation(angle: Float, angleX: Float, angleY: Float, angleZ: Float) {
         super.setRotation(angle, angleX, angleY, angleZ)
+
         mAngle = angle
         mRotationX = angleX
         mRotationY = angleY

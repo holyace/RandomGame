@@ -13,8 +13,10 @@ class GLRender: GLSurfaceView.Renderer, View.OnTouchListener {
 
     companion object {
         const val TAG = "GLRender"
-        const val CORDS_PER_VERTEX = 3
-        const val CORDS_PER_VERTEX_COLOR = 2 * CORDS_PER_VERTEX
+        const val VERTEX_POINT_SIZE = 3
+        const val COLOR_POINT_SIZE = 3
+        const val TEXTURE_CORDS_POINT_SIZE = 2
+        const val CORDS_PER_VERTEX_COLOR = 2 * VERTEX_POINT_SIZE
         const val FLOAT_SIZE = 4
         const val MATRIX_SIZE = 16
     }
@@ -51,7 +53,11 @@ class GLRender: GLSurfaceView.Renderer, View.OnTouchListener {
 
 //        mRenderable = SquareVertexVAORender(mAppCtx!!)
 
-        mRenderable = SquareMatrixRender(mAppCtx!!)
+//        mRenderable = SquareMatrixRender(mAppCtx!!)
+
+//        mRenderable = SquareTextureRender(mAppCtx!!)
+
+        mRenderable = SquareColorRender(mAppCtx!!)
     }
 
     override fun onSurfaceCreated(gl: GL10?, config: EGLConfig?) {

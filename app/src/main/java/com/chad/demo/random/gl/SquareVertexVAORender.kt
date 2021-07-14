@@ -71,9 +71,9 @@ class SquareVertexVAORender(context: Context)
                 mVertexBuffer, GLES30.GL_STATIC_DRAW)
 
         //将顶点位置数据送入渲染管线
-        GLES30.glVertexAttribPointer(0, GLRender.CORDS_PER_VERTEX,
+        GLES30.glVertexAttribPointer(0, GLRender.VERTEX_POINT_SIZE,
                 GLES30.GL_FLOAT, false,
-                GLRender.CORDS_PER_VERTEX * GLRender.FLOAT_SIZE, 0)
+                GLRender.VERTEX_POINT_SIZE * GLRender.FLOAT_SIZE, 0)
 
         GLES30.glEnableVertexAttribArray(0)
     }
