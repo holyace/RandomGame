@@ -49,7 +49,7 @@ class GLRender: GLSurfaceView.Renderer, View.OnTouchListener {
 
 //        mRenderable = SquareVertexRender(mAppCtx!!)
 
-//        mRenderable = SquareIndexRender(mAppCtx!!)
+        mRenderable = SquareIndexRender(mAppCtx!!)
 
 //        mRenderable = SquareVertexVAORender(mAppCtx!!)
 
@@ -57,7 +57,9 @@ class GLRender: GLSurfaceView.Renderer, View.OnTouchListener {
 
 //        mRenderable = SquareTextureRender(mAppCtx!!)
 
-        mRenderable = SquareColorRender(mAppCtx!!)
+//        mRenderable = TriangleRender(mAppCtx!!)
+
+//        mRenderable = SquareCubeRender(mAppCtx!!)
     }
 
     override fun onSurfaceCreated(gl: GL10?, config: EGLConfig?) {

@@ -6,19 +6,51 @@ import java.nio.ByteBuffer
 import java.nio.ByteOrder
 import java.nio.FloatBuffer
 
-class SquareColorRender(context: Context):
+class SquareCubeRender(context: Context):
         Renderable(context,
-                "shader_color.vs.glsl",
-                "shader_color.fs.glsl") {
+                "shader_texture_coords.vs.glsl",
+                "shader_texture_coords.fs.glsl") {
 
-    private val mVertexPoints = floatArrayOf(
-            //vertex(xyz) color(rgb) texture coords
-            1f, 1f, 0f, 1f, 0f, 0f, 1f, 0f,
-            -1f, 1f, 0f, 0f, 1f, 0f, 0f, 0f,
-            -1f, -1f, 0f, 0f, 0f, 1f, 0f, 1f,
-            1f, 1f, 0f, 1f, 0f, 0f, 1f, 0f,
-            -1f, -1f, 0f, 0f, 0f, 1f, 0f, 1f,
-            1f, -1f, 0f, 1f, 1f, 0f, 1f, 1f
+    private val x0 = 0.5f
+    private val y0 = 0.5f
+    private val z0 = 0.5f
+
+    private val mV0 = floatArrayOf(x0, y0, z0)
+    private val mV1 = floatArrayOf(-x0, y0, z0)
+    private val mV2 = floatArrayOf(-x0, -y0, z0)
+    private val mV3 = floatArrayOf(x0, -y0, z0)
+    private val mV4 = floatArrayOf(x0, y0, -z0)
+    private val mV5 = floatArrayOf(-x0, y0, -z0)
+    private val mV6 = floatArrayOf(-x0, -y0, -z0)
+    private val mV7 = floatArrayOf(x0, -y0, -z0)
+
+    private val mT0 = floatArrayOf(0f, 0f)
+    private val mT1 = floatArrayOf(1f, 0f)
+    private val mT2 = floatArrayOf(0f, 1f)
+    private val mT3 = floatArrayOf(1f, 1f)
+
+    /**
+     *     v5- - - v4
+     *    /        /
+     *   v1- - - v0 |
+     *   |        | |
+     *   |        | v7
+     *   v2- - - v3/
+     *
+     *
+     *   t0- - - t1
+     *   |       |
+     *   |       |
+     *   t2- - - t3
+     */
+    private val mVertexPoints = FloatArrayEx.from(
+            //vertex(x,y,z) texture coords(s,t)
+            mV0, mT1, mV1, mT0, mV2, mT2, mV3, mT3,
+            mV4, mT3, mV5, mT2, mV6, mT0, mV7, mT1
+    )
+
+    private val mVertexIndex = floatArrayOf(
+
     )
 
     private lateinit var mVertexBuffer: FloatBuffer

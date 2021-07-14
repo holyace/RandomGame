@@ -74,4 +74,39 @@ open class Renderable(protected val context: Context,
 
         return textureId[0]
     }
+
+    protected fun loadCubeTexture(context: Context, name: String): Int {
+        val textureId = IntArray(1)
+        GLES30.glGenTextures(1, textureId, 0)
+        if (textureId[0] <= 0) {
+            Logger.i(Constant.MODULE, TAG, "glGenCubeTextures res: %s, id: %d, error: %d",
+                    name, textureId[0], GLES30.glGetError())
+            return -1
+        }
+
+        GLES30.glBindTexture(GLES30.GL_TEXTURE_CUBE_MAP, textureId[0])
+
+        val bitmap = FileUtil.readAssetsBitmap(context, name)
+        if (bitmap == null) {
+            Logger.i(Constant.MODULE, TAG, "glGenTextures load bitmap error: %s", name)
+            GLES30.glDeleteTextures(1, textureId, 0)
+            return -1
+        }
+
+        for (i in GLES30.GL_TEXTURE_CUBE_MAP_POSITIVE_X .. GLES30.GL_TEXTURE_CUBE_MAP_NEGATIVE_Z) {
+            GLUtils.texImage2D(i, 0, bitmap, 0)
+        }
+
+        GLES30.glTexParameteri(GLES30.GL_TEXTURE_CUBE_MAP, GLES30.GL_TEXTURE_MIN_FILTER, GLES30.GL_NEAREST)
+        GLES30.glTexParameteri(GLES30.GL_TEXTURE_CUBE_MAP, GLES30.GL_TEXTURE_MAG_FILTER, GLES30.GL_LINEAR)
+        GLES30.glTexParameteri(GLES30.GL_TEXTURE_CUBE_MAP, GLES30.GL_TEXTURE_WRAP_S, GLES30.GL_CLAMP_TO_EDGE)
+        GLES30.glTexParameteri(GLES30.GL_TEXTURE_CUBE_MAP, GLES30.GL_TEXTURE_WRAP_T, GLES30.GL_CLAMP_TO_EDGE)
+        GLES30.glTexParameteri(GLES30.GL_TEXTURE_CUBE_MAP, GLES30.GL_TEXTURE_WRAP_R, GLES30.GL_CLAMP_TO_EDGE)
+
+        GLES30.glGenerateMipmap(GLES30.GL_TEXTURE_CUBE_MAP)
+
+        bitmap.recycle()
+
+        return textureId[0]
+    }
 }
