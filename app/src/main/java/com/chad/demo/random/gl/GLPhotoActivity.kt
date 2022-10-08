@@ -22,7 +22,7 @@ class GLPhotoActivity: AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         if (!checkHardware()) {
-            Toast.makeText(this, "", Toast.LENGTH_LONG).show()
+            Toast.makeText(this, "当前设备不支持OpenGL", Toast.LENGTH_LONG).show()
             finish()
             return
         }
